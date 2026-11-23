@@ -1,0 +1,11 @@
+[Event "Odds ladder rung 4: Opus gives queen + rook"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "Claude Haiku 5.5"]
+[Black "Claude Opus 5.5"]
+[Result "1/2-1/2"]
+[FEN "1nb1kbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQk - 0 1"]
+[SetUp "1"]
+
+1. e4 e5 2. Bc4 Nf6 3. Nf3 Nc6 4. Nc3 Nxe4 5. Nxe4 Be7 6. d4 exd4 7. Nxd4 d5 8. Bxd5 Nxd4 9. Qxd4 O-O 10. Qe5 Bd6 11. Qxd6 cxd6 12. Nxd6 Rd8 13. Nxc8 Rxd5 14. Ne7+ Kf8 15. Nxd5 Ke8 16. Nf6+ gxf6 17. Bf4 Ke7 18. Rd1 Ke6 19. Rd4 Ke7 20. Bd6+ Ke6 21. Bf4 Ke7 22. Bd6+ Ke6 1/2-1/2

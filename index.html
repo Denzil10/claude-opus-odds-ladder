@@ -1,0 +1,699 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Claude Opus gives odds to Claude Haiku: how many pieces until Haiku wins?</title>
+<style>body{font:17px/1.5 system-ui,sans-serif;max-width:900px;margin:40px auto;padding:0 18px;background:#14161c;color:#e6e8ec}a{color:#7cc4ff}
+h1{font-size:30px}section{background:#1e2129;padding:18px 22px;margin:22px 0;border-radius:10px}.res{font-weight:700;color:#ffd84d}
+table{border-collapse:collapse;width:100%;font-size:14px}td{padding:3px 8px;border-bottom:1px solid #2c303a;vertical-align:top}tr.bad td{color:#ff6a5e}code{background:#2c303a;padding:1px 5px}</style></head><body>
+<h1>Claude Opus gives odds to Claude Haiku: how many pieces until Haiku wins?</h1>
+<p>Seven games played on 2026-11-24, one per step. Claude Haiku 5.5 is always White; Claude Opus 5.5 is Black and starts without the pieces listed. Each game Haiku fails to win, Opus loses more. The ladder stops at the first Haiku win. Both sides are told the odds.
+Every move is a fresh <code>claude -p --tools ""</code> call (no tools, no code, no memory between moves) that gets the move list, the FEN and a text diagram; three illegal tries in a row forfeit.
+Referee: <a href="ladder.py">ladder.py</a> (python-chess), run in order by <a href="run_ladder.sh">run_ladder.sh</a>. Stockfish (depth 16, <a href="analyze.py">analyze.py</a>) graded every move afterwards; "loss" is centipawns lost by that move, clipped at ±1000.</p>
+<p><b>Result: Haiku's first win came at step 6, with Opus missing its queen, both rooks and both bishops</b> (knights and pawns only), on move 74. Steps 0-3 and 5 were Opus wins, step 4 a draw by repetition. One game per step, so this is a story, not a rating.</p>
+<section><h2>Step 0: Opus gives up nothing (even game)</h2><p class="res">Opus wins · checkmate on move 25 · illegal tries: Haiku 2, Opus 0</p>
+<p>Haiku played 19.Qd5 (&quot;while offering a trade&quot;) and the e6 pawn took it.</p>
+<p><a href="https://denzil10.github.io/claude-chess-engine/index.html?pgn=%5BFEN%20%22rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR%20w%20KQkq%20-%200%201%22%5D%201.%20e4%20c5%202.%20Nf3%20d6%203.%20d4%20cxd4%204.%20Nxd4%20Nf6%205.%20Nc3%20a6%206.%20Bg5%20e6%207.%20Bb5%2B%20axb5%208.%20Ncxb5%20Be7%209.%20Nxd6%2B%20Bxd6%2010.%20Bxf6%20Qxf6%2011.%20O-O%20O-O%2012.%20Nb5%20Be5%2013.%20Nc7%20Bxc7%2014.%20Qe2%20Nc6%2015.%20Rad1%20Bd7%2016.%20Rxd7%20Be5%2017.%20Rxb7%20Rxa2%2018.%20Qc4%20Na5%2019.%20Qd5%20exd5%2020.%20f3%20Bd4%2B%2021.%20Kh1%20Nxb7%2022.%20Rd1%20Rxb2%2023.%20Rd2%20Rb1%2B%2024.%20Rd1%20Rxd1%23">Replay on a board</a> · <a href="games/r0.pgn">PGN</a> · <a href="games/r0.jsonl">full log (every prompt and reply)</a> · <a href="games/r0.eval.json">Stockfish review</a></p>
+<details><summary>Every move</summary><table><tr><td>#</td><td>side</td><td>move</td><td>loss</td><td>comment</td></tr>
+<tr><td>1.</td><td>Haiku</td><td>e4</td><td>11</td><td>Classical opening, staking the center early.</td></tr>
+<tr><td>1...</td><td>Opus</td><td>c5</td><td>15</td><td>Sicilian Defense: fighting for the center asymmetrically.</td></tr>
+<tr><td>2.</td><td>Haiku</td><td>Nf3</td><td>8</td><td>Developing the knight and attacking the center pawn.</td></tr>
+<tr><td>2...</td><td>Opus</td><td>d6</td><td>5</td><td>Classical Sicilian development, preparing Najdorf or Dragon setups.</td></tr>
+<tr><td>3.</td><td>Haiku</td><td>d4</td><td>0</td><td>Striking the centre with d4, opening the Sicilian.</td></tr>
+<tr><td>3...</td><td>Opus</td><td>cxd4</td><td>0</td><td>Open Sicilian; capturing in the center is standard.</td></tr>
+<tr><td>4.</td><td>Haiku</td><td>Nxd4</td><td>3</td><td>Recapturing the pawn with the knight to centralize.</td></tr>
+<tr><td>4...</td><td>Opus</td><td>Nf6</td><td>0</td><td>Standard Open Sicilian development, attacking e4.</td></tr>
+<tr><td>5.</td><td>Haiku</td><td>Nc3</td><td>3</td><td>Developing with tempo, preparing Bc4 and Be3 ideas.</td></tr>
+<tr><td>5...</td><td>Opus</td><td>a6</td><td>8</td><td>Entering the Najdorf, flexible and ambitious.</td></tr>
+<tr><td>6.</td><td>Haiku</td><td>Bg5</td><td>12</td><td>Developing with a pin-style pressure on Black&#x27;s Nf6.</td></tr>
+<tr><td>6...</td><td>Opus</td><td>e6</td><td>0</td><td>Najdorf main line, solid and flexible against Bg5.</td></tr>
+<tr class="bad"><td>7.</td><td>Haiku</td><td>Bb5+</td><td>479</td><td>Check on the e8 king, opening the bishop&#x27;s diagonal.</td></tr>
+<tr><td>7...</td><td>Opus</td><td>axb5</td><td>40</td><td>The bishop hangs on b5, so I&#x27;ll just take it.</td></tr>
+<tr class="bad"><td></td><td></td><td>Nxb5</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>8.</td><td>Haiku</td><td>Ncxb5</td><td>186</td><td>Knight takes the pawn back on b5.</td></tr>
+<tr><td>8...</td><td>Opus</td><td>Be7</td><td>5</td><td>Breaking the pin and developing; I&#x27;m up a piece.</td></tr>
+<tr><td>9.</td><td>Haiku</td><td>Nxd6+</td><td>252</td><td>Winning a pawn with check, forking the king&#x27;s position.</td></tr>
+<tr><td>9...</td><td>Opus</td><td>Bxd6</td><td>47</td><td>Capturing the unprotected knight on d6 leaves me up a piece.</td></tr>
+<tr><td>10.</td><td>Haiku</td><td>Bxf6</td><td>31</td><td>Trading the knight to loosen Black&#x27;s kingside and open lines.</td></tr>
+<tr><td>10...</td><td>Opus</td><td>Qxf6</td><td>4</td><td>Recapturing with the queen keeps my structure healthy and active.</td></tr>
+<tr><td>11.</td><td>Haiku</td><td>O-O</td><td>0</td><td>Castling connects rooks and protects f2 against the queen.</td></tr>
+<tr><td>11...</td><td>Opus</td><td>O-O</td><td>5</td><td>Castling secures my king; I&#x27;m up material and should consolidate.</td></tr>
+<tr><td>12.</td><td>Haiku</td><td>Nb5</td><td>19</td><td>Knight to b5 attacks the undefended bishop on d6.</td></tr>
+<tr><td>12...</td><td>Opus</td><td>Be5</td><td>5</td><td>Saving the attacked bishop; Be5 also eyes b2.</td></tr>
+<tr><td>13.</td><td>Haiku</td><td>Nc7</td><td>156</td><td>Knight fork hits the a8 rook; Black&#x27;s Bxb2 is answered by recapturing.</td></tr>
+<tr><td>13...</td><td>Opus</td><td>Bxc7</td><td>0</td><td>Bishop captures the stranded knight on c7.</td></tr>
+<tr><td>14.</td><td>Haiku</td><td>Qe2</td><td>0</td><td>Consolidating the queen to defend f2 and keep material stable.</td></tr>
+<tr><td>14...</td><td>Opus</td><td>Nc6</td><td>0</td><td>Up big on material; develop and keep it simple.</td></tr>
+<tr><td>15.</td><td>Haiku</td><td>Rad1</td><td>0</td><td>Activating the rook toward the open d-file.</td></tr>
+<tr><td>15...</td><td>Opus</td><td>Bd7</td><td>151</td><td>Developing the bishop, connecting the rooks and covering d7.</td></tr>
+<tr><td>16.</td><td>Haiku</td><td>Rxd7</td><td>3</td><td>Rook takes the loose bishop on d7.</td></tr>
+<tr><td>16...</td><td>Opus</td><td>Be5</td><td>64</td><td>Retreating the bishop to safety on a centralized, active square.</td></tr>
+<tr><td>17.</td><td>Haiku</td><td>Rxb7</td><td>25</td><td>Grab the loose b7 pawn while the rook stays active.</td></tr>
+<tr><td>17...</td><td>Opus</td><td>Rxa2</td><td>7</td><td>Grabbing the a-pawn; the rook also eyes b2.</td></tr>
+<tr><td>18.</td><td>Haiku</td><td>Qc4</td><td>38</td><td>Attacking the undefended knight on c6 with the queen.</td></tr>
+<tr><td>18...</td><td>Opus</td><td>Na5</td><td>0</td><td>Na5 forks queen and rook; if Qxa2, then Nxb7.</td></tr>
+<tr><td>19.</td><td>Haiku</td><td>Qd5</td><td>141</td><td>Centralizing the queen, attacking the Ra2 and Na5 while offering a trade.</td></tr>
+<tr><td>19...</td><td>Opus</td><td>exd5</td><td>0</td><td>Capturing the undefended queen with my e-pawn wins decisive material.</td></tr>
+<tr><td>20.</td><td>Haiku</td><td>f3</td><td>0</td><td>Solidifies f2 and blunts the queen&#x27;s f-file pressure.</td></tr>
+<tr><td>20...</td><td>Opus</td><td>Bd4+</td><td>0</td><td>Check first, then the knight can collect the loose rook.</td></tr>
+<tr><td>21.</td><td>Haiku</td><td>Kh1</td><td>0</td><td>Stepping off the diagonal; the rook on f1 still guards f3.</td></tr>
+<tr><td>21...</td><td>Opus</td><td>Nxb7</td><td>0</td><td>Knight captures the loose rook on b7; Black is winning easily.</td></tr>
+<tr class="bad"><td></td><td></td><td>Kg1</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>22.</td><td>Haiku</td><td>Rd1</td><td>0</td><td>Attacks the bishop on d4 while Black is far ahead.</td></tr>
+<tr><td>22...</td><td>Opus</td><td>Rxb2</td><td>0</td><td>Up material; I&#x27;m grabbing another pawn safely.</td></tr>
+<tr><td>23.</td><td>Haiku</td><td>Rd2</td><td>0</td><td>Rook defends c2 and the second rank.</td></tr>
+<tr><td>23...</td><td>Opus</td><td>Rb1+</td><td>0</td><td>Rook check forces mate: Rb1+ Rd1 Rxd1#.</td></tr>
+<tr><td>24.</td><td>Haiku</td><td>Rd1</td><td>0</td><td>Only legal block against the check.</td></tr>
+<tr><td>24...</td><td>Opus</td><td>Rxd1#</td><td>0</td><td>Rook takes rook, delivering back-rank checkmate.</td></tr>
+</table></details></section><section><h2>Step 1: Opus gives up a knight (b8)</h2><p class="res">Opus wins · checkmate on move 73 · illegal tries: Haiku 1, Opus 3</p>
+<p>Opus played 36...Qb1+ (&quot;Queen check forks king and rook, winning the rook&quot;) and the rook took the queen. Haiku later gave its rook for a pawn (44.Rxh6+) and still reached a pawn ending Stockfish scores as a forced win, then threw it with 56.f7+ and 58.Ke6. Opus promoted the h-pawn and mated.</p>
+<p><a href="https://denzil10.github.io/claude-chess-engine/index.html?pgn=%5BFEN%20%22r1bqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR%20w%20KQkq%20-%200%201%22%5D%201.%20e4%20e5%202.%20Nf3%20d6%203.%20Bc4%20Be7%204.%20O-O%20Nf6%205.%20Nc3%20O-O%206.%20d4%20exd4%207.%20Nxd4%20Re8%208.%20Nd5%20Nxe4%209.%20Nxe7%2B%20Qxe7%2010.%20Re1%20Qf6%2011.%20Qd3%20Bf5%2012.%20Nxf5%20Qxf5%2013.%20Qf3%20Qxf3%2014.%20Be3%20Qf6%2015.%20f3%20Ng5%2016.%20Bxg5%20Qxg5%2017.%20Rxe8%2B%20Rxe8%2018.%20Bd5%20Qxd5%2019.%20a3%20Qd4%2B%2020.%20Kh1%20Qxb2%2021.%20Rd1%20Qxc2%2022.%20Rf1%20Re2%2023.%20Rg1%20h6%2024.%20h3%20Re1%2025.%20Rxe1%20Qc3%2026.%20Re8%2B%20Kh7%2027.%20Re7%20Qc1%2B%2028.%20Kh2%20Qf4%2B%2029.%20Kh1%20Qf6%2030.%20Rxc7%20Qb2%2031.%20Rxf7%20Qxa3%2032.%20Rxb7%20a5%2033.%20Kg1%20a4%2034.%20Kf2%20Qa2%2B%2035.%20Kg1%20a3%2036.%20Kf1%20Qb1%2B%2037.%20Rxb1%20a2%2038.%20Ra1%20d5%2039.%20Rxa2%20d4%2040.%20Rd2%20Kg6%2041.%20Rxd4%20Kf5%2042.%20Rd5%2B%20Ke6%2043.%20Rh5%20Kf6%2044.%20Rxh6%2B%20gxh6%2045.%20Ke2%20Kf5%2046.%20Ke3%20Ke5%2047.%20f4%2B%20Kf5%2048.%20g4%2B%20Kg6%2049.%20f5%2B%20Kf6%2050.%20Kf4%20Kf7%2051.%20Ke5%20Ke7%2052.%20f6%2B%20Kf7%2053.%20Kf5%20Kf8%2054.%20g5%20hxg5%2055.%20Ke6%20Ke8%2056.%20f7%2B%20Kf8%2057.%20Kf6%20g4%2058.%20Ke6%20gxh3%2059.%20Kf6%20h2%2060.%20Kg6%20h1%3DQ%2061.%20Kf6%20Qh6%2B%2062.%20Ke5%20Kxf7%2063.%20Kd5%20Qe3%2064.%20Kd6%20Qe4%2065.%20Kd7%20Qe6%2B%2066.%20Kc7%20Ke7%2067.%20Kb8%20Kd7%2068.%20Kb7%20Qc6%2B%2069.%20Kb8%20Kd8%2070.%20Ka7%20Qb5%2071.%20Ka8%20Kc7%2072.%20Ka7%20Qb7%23">Replay on a board</a> · <a href="games/r1.pgn">PGN</a> · <a href="games/r1.jsonl">full log (every prompt and reply)</a> · <a href="games/r1.eval.json">Stockfish review</a></p>
+<details><summary>Every move</summary><table><tr><td>#</td><td>side</td><td>move</td><td>loss</td><td>comment</td></tr>
+<tr><td>1.</td><td>Haiku</td><td>e4</td><td>12</td><td>Taking the center with a solid pawn push.</td></tr>
+<tr><td>1...</td><td>Opus</td><td>e5</td><td>14</td><td>Classical central response, staking my claim in the center.</td></tr>
+<tr><td>2.</td><td>Haiku</td><td>Nf3</td><td>40</td><td>Solid central pawn, opening lines for my queen and bishop.</td></tr>
+<tr><td>2...</td><td>Opus</td><td>d6</td><td>44</td><td>Defending e5 solidly with Philidor-style d6.</td></tr>
+<tr><td>3.</td><td>Haiku</td><td>Bc4</td><td>35</td><td>Developing the bishop toward f7, pressuring Black&#x27;s weak kingside.</td></tr>
+<tr><td>3...</td><td>Opus</td><td>Be7</td><td>24</td><td>Solid Philidor setup, keeping f7 covered and preparing kingside castling.</td></tr>
+<tr><td>4.</td><td>Haiku</td><td>O-O</td><td>20</td><td>Castling early to safety while keeping the bishop&#x27;s pressure on f7.</td></tr>
+<tr><td>4...</td><td>Opus</td><td>Nf6</td><td>3</td><td>Develop the knight, protect e5, prepare castling.</td></tr>
+<tr><td>5.</td><td>Haiku</td><td>Nc3</td><td>0</td><td>Developing a knight while building central control.</td></tr>
+<tr><td>5...</td><td>Opus</td><td>O-O</td><td>0</td><td>Castle to safety, king tucked away.</td></tr>
+<tr><td>6.</td><td>Haiku</td><td>d4</td><td>45</td><td>Strike the center with d4 to challenge Black&#x27;s e5 pawn.</td></tr>
+<tr><td>6...</td><td>Opus</td><td>exd4</td><td>0</td><td>Releasing central tension; recapture keeps things simple.</td></tr>
+<tr><td>7.</td><td>Haiku</td><td>Nxd4</td><td>46</td><td>Winning the hanging d-pawn with the knight, keeping the queen safe.</td></tr>
+<tr><td>7...</td><td>Opus</td><td>Re8</td><td>74</td><td>Rook to e8 adds pressure on the e4 pawn.</td></tr>
+<tr><td>8.</td><td>Haiku</td><td>Nd5</td><td>94</td><td>Knight hits Be7 and c7, and d5 is safe.</td></tr>
+<tr><td>8...</td><td>Opus</td><td>Nxe4</td><td>0</td><td>Grabbing the undefended e4 pawn; the knight is safe.</td></tr>
+<tr><td>9.</td><td>Haiku</td><td>Nxe7+</td><td>13</td><td>Trade knight for bishop with check, simplifying material.</td></tr>
+<tr><td>9...</td><td>Opus</td><td>Qxe7</td><td>23</td><td>Recapturing the knight with the queen keeps everything protected.</td></tr>
+<tr><td>10.</td><td>Haiku</td><td>Re1</td><td>11</td><td>Rook challenges the e-file, pressuring the knight and queen.</td></tr>
+<tr><td>10...</td><td>Opus</td><td>Qf6</td><td>18</td><td>Qf6 unpins the knight and hits the d4 knight.</td></tr>
+<tr class="bad"><td>11.</td><td>Haiku</td><td>Qd3</td><td>1648</td><td>Attacking the e4 knight twice, with the queen and the e-file rook.</td></tr>
+<tr class="bad"><td>11...</td><td>Opus</td><td>Bf5</td><td>1680</td><td>Bf5 defends the knight on e4 and develops the bishop.</td></tr>
+<tr><td>12.</td><td>Haiku</td><td>Nxf5</td><td>0</td><td>Knight takes the pinned-in bishop, winning material.</td></tr>
+<tr><td>12...</td><td>Opus</td><td>Qxf5</td><td>0</td><td>Recapturing the knight; the queen on d3 can&#x27;t defend it.</td></tr>
+<tr><td>13.</td><td>Haiku</td><td>Qf3</td><td>38</td><td>Offering a queen trade while guarding f2 against the knight-supported queen check.</td></tr>
+<tr><td>13...</td><td>Opus</td><td>Qxf3</td><td>0</td><td>Trade queens, keeping my extra pawn safe.</td></tr>
+<tr class="bad"><td>14.</td><td>Haiku</td><td>Be3</td><td>1410</td><td>Defends f2 and blocks the queen&#x27;s rank attack.</td></tr>
+<tr class="bad"><td></td><td></td><td>Qc6</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>14...</td><td>Opus</td><td>Qf6</td><td>0</td><td>Up a queen; retreat to safety and consolidate.</td></tr>
+<tr><td>15.</td><td>Haiku</td><td>f3</td><td>37</td><td>Pawn to f3 hits the knight and blocks the queen&#x27;s file.</td></tr>
+<tr><td>15...</td><td>Opus</td><td>Ng5</td><td>19</td><td>Retreating the attacked knight to safety, where the queen defends it.</td></tr>
+<tr><td>16.</td><td>Haiku</td><td>Bxg5</td><td>74</td><td>Winning back the knight and opening the e-file.</td></tr>
+<tr><td>16...</td><td>Opus</td><td>Qxg5</td><td>35</td><td>Free bishop on g5; the queen grabs it.</td></tr>
+<tr><td>17.</td><td>Haiku</td><td>Rxe8+</td><td>33</td><td>Trading rooks reduces Black&#x27;s attacking chances on the open e-file.</td></tr>
+<tr><td>17...</td><td>Opus</td><td>Rxe8</td><td>0</td><td>Recapturing the rook leaves me up a queen.</td></tr>
+<tr><td>18.</td><td>Haiku</td><td>Bd5</td><td>72</td><td>Centralizing the bishop and covering e6 and f7.</td></tr>
+<tr><td>18...</td><td>Opus</td><td>Qxd5</td><td>0</td><td>Grabbing the undefended bishop on d5 leaves me far ahead.</td></tr>
+<tr><td>19.</td><td>Haiku</td><td>a3</td><td>0</td><td>Pawn to a3 keeps a2 safe from the queen.</td></tr>
+<tr><td>19...</td><td>Opus</td><td>Qd4+</td><td>0</td><td>Queen check drives the king toward the corner; more pressure follows.</td></tr>
+<tr><td>20.</td><td>Haiku</td><td>Kh1</td><td>0</td><td>Stepping out of the check on the diagonal to keep the king safe.</td></tr>
+<tr><td>20...</td><td>Opus</td><td>Qxb2</td><td>0</td><td>Grabbing the b-pawn and hitting the a1 rook.</td></tr>
+<tr><td>21.</td><td>Haiku</td><td>Rd1</td><td>0</td><td>Rook escapes the queen&#x27;s attack and eyes the d6 pawn.</td></tr>
+<tr><td>21...</td><td>Opus</td><td>Qxc2</td><td>0</td><td>Grab the c-pawn and hit the rook, keeping my back rank covered.</td></tr>
+<tr><td>22.</td><td>Haiku</td><td>Rf1</td><td>0</td><td>Rook steps off the queen&#x27;s attack and guards the back rank.</td></tr>
+<tr><td>22...</td><td>Opus</td><td>Re2</td><td>0</td><td>Rook to the second rank, threatening mate on g2.</td></tr>
+<tr><td>23.</td><td>Haiku</td><td>Rg1</td><td>0</td><td>Rg1 defends g2 and stops the Rxg2 mate threat.</td></tr>
+<tr><td>23...</td><td>Opus</td><td>h6</td><td>0</td><td>Making luft first; with a queen up, safety comes first.</td></tr>
+<tr><td>24.</td><td>Haiku</td><td>h3</td><td>0</td><td>Gives the king luft and keeps Rg1 guarding g2.</td></tr>
+<tr class="bad"><td></td><td></td><td>Qf2</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>24...</td><td>Opus</td><td>Re1</td><td>108</td><td>Offering a rook trade to reach a simple queen-up ending.</td></tr>
+<tr><td>25.</td><td>Haiku</td><td>Rxe1</td><td>0</td><td>Trading rooks removes Black&#x27;s active rook on the back rank.</td></tr>
+<tr><td>25...</td><td>Opus</td><td>Qc3</td><td>0</td><td>Forking the rook and the a3 pawn; my king has luft.</td></tr>
+<tr><td>26.</td><td>Haiku</td><td>Re8+</td><td>0</td><td>Check first, forcing the king up and keeping the rook active.</td></tr>
+<tr><td>26...</td><td>Opus</td><td>Kh7</td><td>0</td><td>Only legal reply to the check; the king steps aside.</td></tr>
+<tr><td>27.</td><td>Haiku</td><td>Re7</td><td>26</td><td>Rook to the seventh attacks f7 and stays active.</td></tr>
+<tr><td>27...</td><td>Opus</td><td>Qc1+</td><td>0</td><td>Checking the king first to look for a queen fork on the rook.</td></tr>
+<tr><td>28.</td><td>Haiku</td><td>Kh2</td><td>21</td><td>Only safe escape; blocking with Re1 loses the rook.</td></tr>
+<tr><td>28...</td><td>Opus</td><td>Qf4+</td><td>0</td><td>Checking the king, then aiming to grab the f3 pawn.</td></tr>
+<tr><td>29.</td><td>Haiku</td><td>Kh1</td><td>14</td><td>Check from the queen; I&#x27;ll step the king to h1, away from the diagonal.</td></tr>
+<tr><td>29...</td><td>Opus</td><td>Qf6</td><td>58</td><td>Attacking the rook and defending f7 at once.</td></tr>
+<tr><td>30.</td><td>Haiku</td><td>Rxc7</td><td>11</td><td>Rook escapes the queen&#x27;s attack and wins a pawn.</td></tr>
+<tr class="bad"><td></td><td></td><td>Qb6</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>30...</td><td>Opus</td><td>Qb2</td><td>0</td><td>Queen defends b7 and attacks a3.</td></tr>
+<tr class="bad"><td></td><td></td><td>Rxa7</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>31.</td><td>Haiku</td><td>Rxf7</td><td>0</td><td>Winning a pawn safely; Rxb7 would hang the rook to Qxb7.</td></tr>
+<tr><td>31...</td><td>Opus</td><td>Qxa3</td><td>6</td><td>Grabbing the a-pawn; my queen also guards a7.</td></tr>
+<tr><td>32.</td><td>Haiku</td><td>Rxb7</td><td>0</td><td>Winning a pawn while keeping the rook active on the seventh rank.</td></tr>
+<tr><td>32...</td><td>Opus</td><td>a5</td><td>0</td><td>Pushing the passed a-pawn, backed by my queen.</td></tr>
+<tr><td>33.</td><td>Haiku</td><td>Kg1</td><td>31</td><td>Consolidating the king first, away from back-rank and first-rank checks.</td></tr>
+<tr><td>33...</td><td>Opus</td><td>a4</td><td>3</td><td>Pushing the passed a-pawn while my queen escorts it home.</td></tr>
+<tr><td>34.</td><td>Haiku</td><td>Kf2</td><td>25</td><td>King steps up to guard f3 against the queen.</td></tr>
+<tr><td>34...</td><td>Opus</td><td>Qa2+</td><td>6</td><td>Checking along the second rank, then the a-pawn marches.</td></tr>
+<tr><td>35.</td><td>Haiku</td><td>Kg1</td><td>6</td><td>Stepping the king to g1 gets out of the check and keeps g2 defended.</td></tr>
+<tr><td>35...</td><td>Opus</td><td>a3</td><td>0</td><td>Pushing the passed a-pawn toward promotion with queen support.</td></tr>
+<tr><td>36.</td><td>Haiku</td><td>Kf1</td><td>0</td><td>Stepping the king off the second rank to avoid queen checks.</td></tr>
+<tr class="bad"><td>36...</td><td>Opus</td><td>Qb1+</td><td>1650</td><td>Queen check forks king and rook, winning the rook.</td></tr>
+<tr><td>37.</td><td>Haiku</td><td>Rxb1</td><td>21</td><td>Rook takes queen on b1, ending the check.</td></tr>
+<tr><td>37...</td><td>Opus</td><td>a2</td><td>5</td><td>Queen&#x27;s gone; pushing the a-pawn to tie down the rook.</td></tr>
+<tr><td>38.</td><td>Haiku</td><td>Ra1</td><td>13</td><td>Blocking the a-pawn with the rook; it then wins a2.</td></tr>
+<tr><td>38...</td><td>Opus</td><td>d5</td><td>27</td><td>Pushing the d-pawn while White&#x27;s rook ties itself to a2.</td></tr>
+<tr><td>39.</td><td>Haiku</td><td>Rxa2</td><td>0</td><td>Rook takes the dangerous passed pawn; a2 is undefended.</td></tr>
+<tr><td>39...</td><td>Opus</td><td>d4</td><td>11</td><td>Black is lost, rook vs pawns. Just play a move: d4.</td></tr>
+<tr><td>40.</td><td>Haiku</td><td>Rd2</td><td>8</td><td>Blockade the passed pawn on the d-file.</td></tr>
+<tr><td>40...</td><td>Opus</td><td>Kg6</td><td>7</td><td>Losing endgame; bring the king toward the center.</td></tr>
+<tr><td>41.</td><td>Haiku</td><td>Rxd4</td><td>0</td><td>Taking the passed d-pawn removes Black&#x27;s only real counterplay.</td></tr>
+<tr><td>41...</td><td>Opus</td><td>Kf5</td><td>0</td><td>Black&#x27;s lost, just keep the pawns together.</td></tr>
+<tr><td>42.</td><td>Haiku</td><td>Rd5+</td><td>0</td><td>Check on the fifth rank, driving the king back.</td></tr>
+<tr><td>42...</td><td>Opus</td><td>Ke6</td><td>0</td><td>Attacking the rook while escaping check.</td></tr>
+<tr><td>43.</td><td>Haiku</td><td>Rh5</td><td>9</td><td>Rook to h5 attacks the h6 pawn with no Black counterplay.</td></tr>
+<tr><td>43...</td><td>Opus</td><td>Kf6</td><td>18</td><td>Centralizing my king toward the kingside pawns.</td></tr>
+<tr><td>44.</td><td>Haiku</td><td>Rxh6+</td><td>220</td><td>Winning the h6 pawn with check keeps the rook active.</td></tr>
+<tr><td>44...</td><td>Opus</td><td>gxh6</td><td>6</td><td>Capturing the checking rook wins material back.</td></tr>
+<tr><td>45.</td><td>Haiku</td><td>Ke2</td><td>0</td><td>Centralizing the king while my pawns hold the kingside.</td></tr>
+<tr><td>45...</td><td>Opus</td><td>Kf5</td><td>99</td><td>My king heads for f4 to pressure White&#x27;s pawns.</td></tr>
+<tr><td>46.</td><td>Haiku</td><td>Ke3</td><td>0</td><td>Centralizing the king to support my pawns and restrict Black&#x27;s king.</td></tr>
+<tr><td>46...</td><td>Opus</td><td>Ke5</td><td>182</td><td>Taking the opposition and trying to hold the draw.</td></tr>
+<tr><td>47.</td><td>Haiku</td><td>f4+</td><td>0</td><td>Check first, gaining a tempo while keeping my king close to the pawns.</td></tr>
+<tr><td>47...</td><td>Opus</td><td>Kf5</td><td>18</td><td>King steps up to blockade the passed f-pawn.</td></tr>
+<tr><td>48.</td><td>Haiku</td><td>g4+</td><td>0</td><td>Checking the king with g4 gains a tempo and keeps the pawns protected.</td></tr>
+<tr><td>48...</td><td>Opus</td><td>Kg6</td><td>0</td><td>Losing endgame; keeping my king near the h-pawn.</td></tr>
+<tr><td>49.</td><td>Haiku</td><td>f5+</td><td>0</td><td>Check with f5 gains space and keeps the pawns rolling.</td></tr>
+<tr><td>49...</td><td>Opus</td><td>Kf6</td><td>0</td><td>Blockading the passed pawn and staying close is my best defense.</td></tr>
+<tr><td>50.</td><td>Haiku</td><td>Kf4</td><td>0</td><td>King centralizes to f4, supporting the g5 and e5 squares.</td></tr>
+<tr><td>50...</td><td>Opus</td><td>Kf7</td><td>0</td><td>Holding the king close and hoping for stalemate chances.</td></tr>
+<tr><td>51.</td><td>Haiku</td><td>Ke5</td><td>0</td><td>Centralize the king to support the f5 pawn.</td></tr>
+<tr><td>51...</td><td>Opus</td><td>Ke7</td><td>0</td><td>Taking the opposition to hold White&#x27;s king back as long as possible.</td></tr>
+<tr><td>52.</td><td>Haiku</td><td>f6+</td><td>0</td><td>Pawn check on f6 forces the king back and starts the pawn push.</td></tr>
+<tr><td>52...</td><td>Opus</td><td>Kf7</td><td>0</td><td>Blockade the f-pawn and keep the king close.</td></tr>
+<tr><td>53.</td><td>Haiku</td><td>Kf5</td><td>0</td><td>Kf5 supports the pawns and restricts Black&#x27;s king.</td></tr>
+<tr><td>53...</td><td>Opus</td><td>Kf8</td><td>0</td><td>Staying in front of the f-pawn to block it.</td></tr>
+<tr><td>54.</td><td>Haiku</td><td>g5</td><td>0</td><td>Support f6 with g5, attacking h6 and freeing the f-pawn.</td></tr>
+<tr><td>54...</td><td>Opus</td><td>hxg5</td><td>0</td><td>Trading pawns, hoping for a stalemate defense.</td></tr>
+<tr><td>55.</td><td>Haiku</td><td>Ke6</td><td>0</td><td>Kings support the pawn; f7 and f8 come next.</td></tr>
+<tr><td>55...</td><td>Opus</td><td>Ke8</td><td>0</td><td>Opposition matters here; heading to e8 keeps stalemate chances.</td></tr>
+<tr class="bad"><td>56.</td><td>Haiku</td><td>f7+</td><td>919</td><td>Pushing the passed pawn with check, heading for promotion.</td></tr>
+<tr><td>56...</td><td>Opus</td><td>Kf8</td><td>0</td><td>Blocking the pawn is the only way to stop promotion.</td></tr>
+<tr><td>57.</td><td>Haiku</td><td>Kf6</td><td>38</td><td>Kf6 cuts off the black king, leaving only pawn moves.</td></tr>
+<tr><td>57...</td><td>Opus</td><td>g4</td><td>0</td><td>Only legal move; hoping for a stalemate trick.</td></tr>
+<tr class="bad"><td>58.</td><td>Haiku</td><td>Ke6</td><td>645</td><td>Keeping f7 protected while avoiding stalemate.</td></tr>
+<tr><td>58...</td><td>Opus</td><td>gxh3</td><td>0</td><td>Capturing gives me a passed h-pawn racing to promote.</td></tr>
+<tr class="bad"><td>59.</td><td>Haiku</td><td>Kf6</td><td>318</td><td>Boxing the king on f8 so Black must push the h-pawn.</td></tr>
+<tr><td>59...</td><td>Opus</td><td>h2</td><td>0</td><td>Only legal move; the pawn races to promote.</td></tr>
+<tr><td>60.</td><td>Haiku</td><td>Kg6</td><td>0</td><td>Can&#x27;t stop h1; keep f7 protected.</td></tr>
+<tr><td>60...</td><td>Opus</td><td>h1=Q</td><td>0</td><td>Promoting now; the f-pawn is blocked by my king.</td></tr>
+<tr><td>61.</td><td>Haiku</td><td>Kf6</td><td>0</td><td>Freezing Black&#x27;s king on f8 so the queen must do all the work.</td></tr>
+<tr><td>61...</td><td>Opus</td><td>Qh6+</td><td>0</td><td>Checking the king away, then I&#x27;ll grab the f7 pawn.</td></tr>
+<tr><td>62.</td><td>Haiku</td><td>Ke5</td><td>0</td><td>Stepping off the queen&#x27;s rank toward the center.</td></tr>
+<tr><td>62...</td><td>Opus</td><td>Kxf7</td><td>0</td><td>Capturing the last pawn leaves a simple queen-versus-king win.</td></tr>
+<tr><td>63.</td><td>Haiku</td><td>Kd5</td><td>0</td><td>Sidestepping the queen&#x27;s attacks; the position is lost, so I&#x27;ll keep the king safe.</td></tr>
+<tr><td>63...</td><td>Opus</td><td>Qe3</td><td>0</td><td>Boxing the king in with the queen before bringing mine closer.</td></tr>
+<tr><td>64.</td><td>Haiku</td><td>Kd6</td><td>0</td><td>Stepping to d6, a safe square the queen doesn&#x27;t cover.</td></tr>
+<tr><td>64...</td><td>Opus</td><td>Qe4</td><td>0</td><td>Queen boxes the king toward the edge for mate.</td></tr>
+<tr><td>65.</td><td>Haiku</td><td>Kd7</td><td>0</td><td>Down to a lone king; I&#x27;ll keep it safe.</td></tr>
+<tr><td>65...</td><td>Opus</td><td>Qe6+</td><td>0</td><td>Checking the king and herding it toward the edge for mate.</td></tr>
+<tr><td>66.</td><td>Haiku</td><td>Kc7</td><td>0</td><td>Stepping away from the queen&#x27;s check along the safe square.</td></tr>
+<tr><td>66...</td><td>Opus</td><td>Ke7</td><td>0</td><td>Bringing my king closer to box in White&#x27;s king.</td></tr>
+<tr><td>67.</td><td>Haiku</td><td>Kb8</td><td>0</td><td>Only legal squares left; the king must run.</td></tr>
+<tr><td>67...</td><td>Opus</td><td>Kd7</td><td>0</td><td>Bringing my king closer to box in White&#x27;s king.</td></tr>
+<tr><td>68.</td><td>Haiku</td><td>Kb7</td><td>0</td><td>Only safe square; king must avoid the queen and black king.</td></tr>
+<tr><td>68...</td><td>Opus</td><td>Qc6+</td><td>0</td><td>Queen check from c6, guarded by my king, drives White&#x27;s king back.</td></tr>
+<tr><td>69.</td><td>Haiku</td><td>Kb8</td><td>0</td><td>Stepping out of check toward the corner.</td></tr>
+<tr><td>69...</td><td>Opus</td><td>Kd8</td><td>0</td><td>Quiet king step avoids stalemate and leaves White one move.</td></tr>
+<tr><td>70.</td><td>Haiku</td><td>Ka7</td><td>0</td><td>Only legal move; every other square is attacked or adjacent to Black&#x27;s king.</td></tr>
+<tr><td>70...</td><td>Opus</td><td>Qb5</td><td>0</td><td>Boxing the king in with the queen, avoiding stalemate.</td></tr>
+<tr><td>71.</td><td>Haiku</td><td>Ka8</td><td>0</td><td>Only legal move; the king is boxed in.</td></tr>
+<tr><td>71...</td><td>Opus</td><td>Kc7</td><td>0</td><td>Bring the king closer to set up mate.</td></tr>
+<tr><td>72.</td><td>Haiku</td><td>Ka7</td><td>0</td><td>Only safe square; the king must step to a7.</td></tr>
+<tr><td>72...</td><td>Opus</td><td>Qb7#</td><td>0</td><td>Queen to b7, protected by the king, delivers checkmate.</td></tr>
+</table></details></section><section><h2>Step 2: Opus gives up a rook (a8)</h2><p class="res">Opus wins · checkmate on move 46 · illegal tries: Haiku 1, Opus 1</p>
+<p>Haiku blundered into a mate threat twice (16.g3, 19.Qe2); Opus missed the first.</p>
+<p><a href="https://denzil10.github.io/claude-chess-engine/index.html?pgn=%5BFEN%20%221nbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR%20w%20KQk%20-%200%201%22%5D%201.%20e4%20e5%202.%20Nf3%20Nc6%203.%20Bc4%20Bc5%204.%20Ng5%20Qf6%205.%20Nf3%20Nge7%206.%20O-O%20O-O%207.%20d3%20d6%208.%20Bg5%20Qg6%209.%20Bxe7%20Nxe7%2010.%20Nc3%20Be6%2011.%20Bxe6%20Qxe6%2012.%20Ng5%20Qg6%2013.%20h4%20h6%2014.%20Nd5%20Nxd5%2015.%20Nf3%20Nf4%2016.%20g3%20Ne6%2017.%20d4%20exd4%2018.%20Nd2%20d3%2019.%20Qe2%20dxe2%2020.%20Rae1%20exf1%3DQ%2B%2021.%20Rxf1%20Bxf2%2B%2022.%20Rxf2%20Qxg3%2B%2023.%20Rg2%20Qe1%2B%2024.%20Nf1%20Nf4%2025.%20Rg4%20Qxe4%2026.%20Nh2%20Nh3%2B%2027.%20Kf1%20Qh1%2B%2028.%20Ke2%20Qxh2%2B%2029.%20Ke1%20Qg1%2B%2030.%20Rxg1%20Nxg1%2031.%20Kf2%20Nh3%2B%2032.%20Kg2%20Nf4%2B%2033.%20Kf3%20g5%2034.%20hxg5%20hxg5%2035.%20Kg3%20Re8%2036.%20Kh2%20Re2%2B%2037.%20Kg3%20Rxc2%2038.%20Kf3%20Rxb2%2039.%20Ke3%20Rxa2%2040.%20Kd4%20g4%2041.%20Ke3%20g3%2042.%20Kxf4%20g2%2043.%20Kg3%20g1%3DQ%2B%2044.%20Kf4%20Ra4%2B%2045.%20Kf5%20Qg6%23">Replay on a board</a> · <a href="games/r2.pgn">PGN</a> · <a href="games/r2.jsonl">full log (every prompt and reply)</a> · <a href="games/r2.eval.json">Stockfish review</a></p>
+<details><summary>Every move</summary><table><tr><td>#</td><td>side</td><td>move</td><td>loss</td><td>comment</td></tr>
+<tr><td>1.</td><td>Haiku</td><td>e4</td><td>5</td><td>Central pawn push; grab the center early.</td></tr>
+<tr><td>1...</td><td>Opus</td><td>e5</td><td>1</td><td>Solid central reply, aiming for open development.</td></tr>
+<tr><td>2.</td><td>Haiku</td><td>Nf3</td><td>10</td><td>Developing with Nf3 to attack the e5 pawn.</td></tr>
+<tr><td>2...</td><td>Opus</td><td>Nc6</td><td>1</td><td>Defend e5 solidly and develop the knight.</td></tr>
+<tr><td>3.</td><td>Haiku</td><td>Bc4</td><td>19</td><td>Developing the bishop toward the weak f7 square.</td></tr>
+<tr><td>3...</td><td>Opus</td><td>Bc5</td><td>15</td><td>Solid development, heading for the Italian Game.</td></tr>
+<tr class="bad"><td>4.</td><td>Haiku</td><td>Ng5</td><td>649</td><td>Knight hits f7, backed by the bishop on c4.</td></tr>
+<tr class="bad"><td>4...</td><td>Opus</td><td>Qf6</td><td>587</td><td>Queen defends f7 and threatens mate on f2.</td></tr>
+<tr><td>5.</td><td>Haiku</td><td>Nf3</td><td>19</td><td>Knight retreats, blocking the f-file and defusing Qxf2 mate.</td></tr>
+<tr><td>5...</td><td>Opus</td><td>Nge7</td><td>12</td><td>Developing the kingside knight; the queen still guards f7.</td></tr>
+<tr><td>6.</td><td>Haiku</td><td>O-O</td><td>22</td><td>Castling kingside gets my king safe and connects the rooks.</td></tr>
+<tr><td>6...</td><td>Opus</td><td>O-O</td><td>25</td><td>Castling to safety; the queen and rook both guard f7.</td></tr>
+<tr><td>7.</td><td>Haiku</td><td>d3</td><td>0</td><td>Solidifying e4 and opening the c1 bishop.</td></tr>
+<tr><td>7...</td><td>Opus</td><td>d6</td><td>0</td><td>Solid center support, opening the light-squared bishop&#x27;s diagonal.</td></tr>
+<tr><td>8.</td><td>Haiku</td><td>Bg5</td><td>0</td><td>Pin-pressure on the queen; the knight behind it gets exposed.</td></tr>
+<tr><td>8...</td><td>Opus</td><td>Qg6</td><td>16</td><td>Queen steps out of the bishop&#x27;s attack, eyeing White&#x27;s kingside.</td></tr>
+<tr><td>9.</td><td>Haiku</td><td>Bxe7</td><td>39</td><td>Trading the knight to relieve pressure on my position.</td></tr>
+<tr><td>9...</td><td>Opus</td><td>Nxe7</td><td>0</td><td>Recapturing the bishop to restore material balance.</td></tr>
+<tr><td>10.</td><td>Haiku</td><td>Nc3</td><td>37</td><td>Developing the knight while keeping the kingside covered.</td></tr>
+<tr><td>10...</td><td>Opus</td><td>Be6</td><td>77</td><td>Trade off White&#x27;s strong light-squared bishop and develop.</td></tr>
+<tr><td>11.</td><td>Haiku</td><td>Bxe6</td><td>0</td><td>Trading bishops simplifies the position, which suits me with the extra rook.</td></tr>
+<tr><td>11...</td><td>Opus</td><td>Qxe6</td><td>0</td><td>Recapture the bishop with the queen, or fxe6. Qxe6 is natural.</td></tr>
+<tr><td>12.</td><td>Haiku</td><td>Ng5</td><td>35</td><td>Knight attacks the queen and gains tempo.</td></tr>
+<tr><td>12...</td><td>Opus</td><td>Qg6</td><td>17</td><td>Queen escapes with tempo, hitting the undefended g5 knight.</td></tr>
+<tr><td>13.</td><td>Haiku</td><td>h4</td><td>50</td><td>Defending the knight on g5 so Black&#x27;s queen can&#x27;t take it.</td></tr>
+<tr><td>13...</td><td>Opus</td><td>h6</td><td>24</td><td>Kicking the knight; h5 would just drop it.</td></tr>
+<tr class="bad"><td>14.</td><td>Haiku</td><td>Nd5</td><td>514</td><td>Centralizing the knight and challenging Black&#x27;s Ne7.</td></tr>
+<tr><td>14...</td><td>Opus</td><td>Nxd5</td><td>0</td><td>Trading off the d5 knight stops Nxe7+, which would fork king and queen.</td></tr>
+<tr class="bad"><td>15.</td><td>Haiku</td><td>Nf3</td><td>696</td><td>Retreating the knight to safety and keeping the position solid.</td></tr>
+<tr><td>15...</td><td>Opus</td><td>Nf4</td><td>0</td><td>Knight jumps to f4, threatening Qxg2 mate.</td></tr>
+<tr class="bad"><td>16.</td><td>Haiku</td><td>g3</td><td>458</td><td>Blocks the g-file mate threat and attacks the knight on f4.</td></tr>
+<tr class="bad"><td>16...</td><td>Opus</td><td>Ne6</td><td>1134</td><td>Retreating the attacked knight to a solid central square.</td></tr>
+<tr><td>17.</td><td>Haiku</td><td>d4</td><td>107</td><td>Central break to attack the c5 bishop, with d4 well defended.</td></tr>
+<tr><td>17...</td><td>Opus</td><td>exd4</td><td>40</td><td>Capturing on d4 wins a pawn, and the e4 pawn is hanging.</td></tr>
+<tr class="bad"><td></td><td></td><td>Qb3</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>18.</td><td>Haiku</td><td>Nd2</td><td>107</td><td>Retreating the knight, since d4 can&#x27;t be held against two attackers.</td></tr>
+<tr><td>18...</td><td>Opus</td><td>d3</td><td>81</td><td>Pushing d3 to open my bishop and threaten c2.</td></tr>
+<tr class="bad"><td>19.</td><td>Haiku</td><td>Qe2</td><td>1041</td><td>Queen steps out of the d3 pawn&#x27;s fork and attacks it.</td></tr>
+<tr><td>19...</td><td>Opus</td><td>dxe2</td><td>0</td><td>Pawn takes the undefended queen and also attacks the rook.</td></tr>
+<tr><td>20.</td><td>Haiku</td><td>Rae1</td><td>0</td><td>Blockading e1 and attacking the passed e2 pawn, keeping f2 guarded.</td></tr>
+<tr><td>20...</td><td>Opus</td><td>exf1=Q+</td><td>0</td><td>Promote by capturing the rook with check; Black wins more material.</td></tr>
+<tr><td>21.</td><td>Haiku</td><td>Rxf1</td><td>0</td><td>Recapture the promoted queen with the rook.</td></tr>
+<tr><td>21...</td><td>Opus</td><td>Bxf2+</td><td>0</td><td>Grabbing f2 with check to tear open White&#x27;s king.</td></tr>
+<tr><td>22.</td><td>Haiku</td><td>Rxf2</td><td>0</td><td>Rook takes the checking bishop; the rook on f2 is safe.</td></tr>
+<tr><td>22...</td><td>Opus</td><td>Qxg3+</td><td>0</td><td>Free pawn with check; the attack continues.</td></tr>
+<tr><td>23.</td><td>Haiku</td><td>Rg2</td><td>0</td><td>Block the check; if the queen takes, the king recaptures.</td></tr>
+<tr><td>23...</td><td>Opus</td><td>Qe1+</td><td>0</td><td>Check with tempo, escaping the rook&#x27;s attack on my queen.</td></tr>
+<tr><td>24.</td><td>Haiku</td><td>Nf1</td><td>0</td><td>Block the check with the knight; the king still defends it.</td></tr>
+<tr class="bad"><td></td><td></td><td>Rxf1+</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>24...</td><td>Opus</td><td>Nf4</td><td>0</td><td>Knight hits the rook and sets up forks.</td></tr>
+<tr><td>25.</td><td>Haiku</td><td>Rg4</td><td>0</td><td>Rook to g4 attacks the undefended knight on f4.</td></tr>
+<tr><td>25...</td><td>Opus</td><td>Qxe4</td><td>0</td><td>Grabbing the pawn while guarding my knight on f4.</td></tr>
+<tr><td>26.</td><td>Haiku</td><td>Nh2</td><td>0</td><td>Developing the knight to defend the rook and clear f1.</td></tr>
+<tr><td>26...</td><td>Opus</td><td>Nh3+</td><td>0</td><td>Discovered attack: the knight checks and the queen hits the rook.</td></tr>
+<tr><td>27.</td><td>Haiku</td><td>Kf1</td><td>0</td><td>Only legal escape from the knight check.</td></tr>
+<tr><td>27...</td><td>Opus</td><td>Qh1+</td><td>0</td><td>Queen check forks king and knight, picking up h2 next.</td></tr>
+<tr><td>28.</td><td>Haiku</td><td>Ke2</td><td>0</td><td>Only safe escape: the king steps to e2.</td></tr>
+<tr><td>28...</td><td>Opus</td><td>Qxh2+</td><td>0</td><td>Grabbing the undefended knight with check.</td></tr>
+<tr><td>29.</td><td>Haiku</td><td>Ke1</td><td>0</td><td>Stepping back to e1 to get out of the queen&#x27;s rank check.</td></tr>
+<tr><td>29...</td><td>Opus</td><td>Qg1+</td><td>88</td><td>Check first, then the loose rook on g4 falls.</td></tr>
+<tr><td>30.</td><td>Haiku</td><td>Rxg1</td><td>0</td><td>Rook takes the queen, winning Black&#x27;s queen for a rook.</td></tr>
+<tr><td>30...</td><td>Opus</td><td>Nxg1</td><td>14</td><td>The knight captures the undefended rook on g1.</td></tr>
+<tr><td>31.</td><td>Haiku</td><td>Kf2</td><td>39</td><td>Chasing the knight with the king while keeping it safe.</td></tr>
+<tr><td>31...</td><td>Opus</td><td>Nh3+</td><td>32</td><td>Knight escapes with check, keeping the decisive material advantage.</td></tr>
+<tr><td>32.</td><td>Haiku</td><td>Kg2</td><td>8</td><td>King steps out of the knight&#x27;s check and attacks it.</td></tr>
+<tr><td>32...</td><td>Opus</td><td>Nf4+</td><td>5</td><td>Knight escapes with check; the rook-up endgame should be winning.</td></tr>
+<tr><td>33.</td><td>Haiku</td><td>Kf3</td><td>6</td><td>Stepping toward the knight to attack it.</td></tr>
+<tr><td>33...</td><td>Opus</td><td>g5</td><td>0</td><td>Protecting the knight with a pawn while consolidating the winning material edge.</td></tr>
+<tr><td>34.</td><td>Haiku</td><td>hxg5</td><td>57</td><td>Trading on g5 removes the pawn that attacks my h4 pawn.</td></tr>
+<tr><td>34...</td><td>Opus</td><td>hxg5</td><td>0</td><td>Capturing the g5 pawn leaves White with nothing.</td></tr>
+<tr><td>35.</td><td>Haiku</td><td>Kg3</td><td>8</td><td>Kg3 attacks the knight, which the g5 pawn defends.</td></tr>
+<tr><td>35...</td><td>Opus</td><td>Re8</td><td>0</td><td>Up a rook and knight; cutting off the king with the rook.</td></tr>
+<tr><td>36.</td><td>Haiku</td><td>Kh2</td><td>0</td><td>Stepping away from the knight and rook checks.</td></tr>
+<tr><td>36...</td><td>Opus</td><td>Re2+</td><td>0</td><td>Rook invades the second rank with check, winning pawns.</td></tr>
+<tr><td>37.</td><td>Haiku</td><td>Kg3</td><td>0</td><td>Stepping out of the rook check toward the knight.</td></tr>
+<tr><td>37...</td><td>Opus</td><td>Rxc2</td><td>0</td><td>Grabbing another pawn; the win is straightforward from here.</td></tr>
+<tr><td>38.</td><td>Haiku</td><td>Kf3</td><td>0</td><td>Stepping toward the knight, keeping the king central.</td></tr>
+<tr><td>38...</td><td>Opus</td><td>Rxb2</td><td>0</td><td>Grab the b2 pawn; Black is completely winning.</td></tr>
+<tr><td>39.</td><td>Haiku</td><td>Ke3</td><td>0</td><td>Heading for the queenside rook and the pawn.</td></tr>
+<tr><td>39...</td><td>Opus</td><td>Rxa2</td><td>0</td><td>The f4 knight is safe behind g5, so grab the last pawn.</td></tr>
+<tr><td>40.</td><td>Haiku</td><td>Kd4</td><td>0</td><td>Lost position, so I&#x27;ll keep the king active and safe.</td></tr>
+<tr><td>40...</td><td>Opus</td><td>g4</td><td>0</td><td>White has only a king left; pushing the g-pawn toward promotion.</td></tr>
+<tr><td>41.</td><td>Haiku</td><td>Ke3</td><td>0</td><td>Heading for the knight and the g-pawn.</td></tr>
+<tr><td>41...</td><td>Opus</td><td>g3</td><td>0</td><td>Passed pawn marches; the rook guards its path to promotion.</td></tr>
+<tr><td>42.</td><td>Haiku</td><td>Kxf4</td><td>0</td><td>Taking the knight; the g-pawn is lost either way.</td></tr>
+<tr><td>42...</td><td>Opus</td><td>g2</td><td>0</td><td>Push the pawn; the rook guards it on the second rank.</td></tr>
+<tr><td>43.</td><td>Haiku</td><td>Kg3</td><td>0</td><td>Only the king is left, so I&#x27;m getting my king as close to the pawn as I can.</td></tr>
+<tr><td>43...</td><td>Opus</td><td>g1=Q+</td><td>0</td><td>Promoting with check; the rook guards everything.</td></tr>
+<tr><td>44.</td><td>Haiku</td><td>Kf4</td><td>0</td><td>Stepping out of the queen&#x27;s check along the g-file.</td></tr>
+<tr><td>44...</td><td>Opus</td><td>Ra4+</td><td>0</td><td>Rook check drives the lone king toward the edge.</td></tr>
+<tr><td>45.</td><td>Haiku</td><td>Kf5</td><td>0</td><td>Stepping off the fourth rank while staying clear of the queen.</td></tr>
+<tr><td>45...</td><td>Opus</td><td>Qg6#</td><td>0</td><td>Queen to g6, protected by the f7 pawn, is checkmate.</td></tr>
+</table></details></section><section><h2>Step 3: Opus gives up the queen (d8)</h2><p class="res">Opus wins · checkmate on move 36 · illegal tries: Haiku 1, Opus 0</p>
+<p>Haiku played 20.Qb5 and the a6 pawn took the queen (&quot;Free queen&quot;).</p>
+<p><a href="https://denzil10.github.io/claude-chess-engine/index.html?pgn=%5BFEN%20%22rnb1kbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR%20w%20KQkq%20-%200%201%22%5D%201.%20e4%20e5%202.%20Nf3%20Nc6%203.%20Bc4%20Be7%204.%20O-O%20Nf6%205.%20Nc3%20O-O%206.%20d3%20d6%207.%20Ng5%20h6%208.%20Nf3%20Na5%209.%20Bb3%20Nxb3%2010.%20axb3%20Be6%2011.%20Nd5%20Bxd5%2012.%20Be3%20Be6%2013.%20Qd2%20Ng4%2014.%20h3%20Nxe3%2015.%20fxe3%20a6%2016.%20Rfd1%20c5%2017.%20Rf1%20Bg5%2018.%20Nxg5%20hxg5%2019.%20Qa5%20Rfc8%2020.%20Qb5%20axb5%2021.%20Rxa8%20Rxa8%2022.%20Rc1%20Ra2%2023.%20Rb1%20c4%2024.%20dxc4%20bxc4%2025.%20Rd1%20cxb3%2026.%20Rc1%20Rxb2%2027.%20Rd1%20Rxc2%2028.%20Rb1%20b2%2029.%20Re1%20Rc1%2030.%20Rxc1%20bxc1%3DQ%2B%2031.%20Kh2%20Qxe3%2032.%20g4%20Qf2%2B%2033.%20Kh1%20Qg3%2034.%20h4%20Bxg4%2035.%20h5%20Bf3%23">Replay on a board</a> · <a href="games/r3.pgn">PGN</a> · <a href="games/r3.jsonl">full log (every prompt and reply)</a> · <a href="games/r3.eval.json">Stockfish review</a></p>
+<details><summary>Every move</summary><table><tr><td>#</td><td>side</td><td>move</td><td>loss</td><td>comment</td></tr>
+<tr><td>1.</td><td>Haiku</td><td>e4</td><td>6</td><td>Central pawn push to claim the center early.</td></tr>
+<tr><td>1...</td><td>Opus</td><td>e5</td><td>6</td><td>Solid central reply, aiming for quick development without the queen.</td></tr>
+<tr><td>2.</td><td>Haiku</td><td>Nf3</td><td>46</td><td>Developing the knight and attacking the e5 pawn.</td></tr>
+<tr><td>2...</td><td>Opus</td><td>Nc6</td><td>14</td><td>Defend e5 and develop the knight.</td></tr>
+<tr><td>3.</td><td>Haiku</td><td>Bc4</td><td>9</td><td>Bishop to c4 targets the weak f7 square.</td></tr>
+<tr><td>3...</td><td>Opus</td><td>Be7</td><td>10</td><td>Solid development, guarding f7 and preparing to castle.</td></tr>
+<tr><td>4.</td><td>Haiku</td><td>O-O</td><td>2</td><td>Castling early to safety, with the queen missing.</td></tr>
+<tr><td>4...</td><td>Opus</td><td>Nf6</td><td>9</td><td>Solid development, guarding against Ng5 ideas on f7.</td></tr>
+<tr><td>5.</td><td>Haiku</td><td>Nc3</td><td>54</td><td>Developing the knight and defending the e4 pawn.</td></tr>
+<tr><td>5...</td><td>Opus</td><td>O-O</td><td>8</td><td>Castling to safety before anything else.</td></tr>
+<tr><td>6.</td><td>Haiku</td><td>d3</td><td>0</td><td>Solid development; I&#x27;m keeping the center closed and preparing my pieces.</td></tr>
+<tr><td>6...</td><td>Opus</td><td>d6</td><td>29</td><td>Solid development, preparing to challenge the center.</td></tr>
+<tr><td>7.</td><td>Haiku</td><td>Ng5</td><td>43</td><td>Knight to g5 eyes f7 and keeps Black&#x27;s pieces under pressure.</td></tr>
+<tr><td>7...</td><td>Opus</td><td>h6</td><td>23</td><td>Kick the knight away from f7.</td></tr>
+<tr><td>8.</td><td>Haiku</td><td>Nf3</td><td>3</td><td>Retreating the attacked knight to safety, keeping material.</td></tr>
+<tr><td>8...</td><td>Opus</td><td>Na5</td><td>20</td><td>Developing and eyeing the bishop pair with Na5.</td></tr>
+<tr><td>9.</td><td>Haiku</td><td>Bb3</td><td>0</td><td>Retreating the bishop to b3, where a2 defends it against the knight.</td></tr>
+<tr><td>9...</td><td>Opus</td><td>Nxb3</td><td>0</td><td>Trade off White&#x27;s strong bishop on b3.</td></tr>
+<tr><td>10.</td><td>Haiku</td><td>axb3</td><td>3</td><td>Recapturing the knight on b3 with the a-pawn, which also removes the attack on my rook.</td></tr>
+<tr><td>10...</td><td>Opus</td><td>Be6</td><td>24</td><td>Developing the bishop and eyeing the queenside.</td></tr>
+<tr><td>11.</td><td>Haiku</td><td>Nd5</td><td>22</td><td>Trade the bishop to simplify while up material.</td></tr>
+<tr><td>11...</td><td>Opus</td><td>Bxd5</td><td>25</td><td>Trade the strong knight and pick up a loose pawn.</td></tr>
+<tr><td>12.</td><td>Haiku</td><td>Be3</td><td>123</td><td>Developing the bishop and preparing central play.</td></tr>
+<tr><td>12...</td><td>Opus</td><td>Be6</td><td>1</td><td>Retreating the attacked bishop to its safe, solid square.</td></tr>
+<tr><td>13.</td><td>Haiku</td><td>Qd2</td><td>57</td><td>Connecting rooks and preparing to contest the center.</td></tr>
+<tr><td>13...</td><td>Opus</td><td>Ng4</td><td>4</td><td>Knight hits e3 bishop, blunting the h6 sacrifice threat.</td></tr>
+<tr><td>14.</td><td>Haiku</td><td>h3</td><td>0</td><td>Kick the knight; h3 forces it to decide.</td></tr>
+<tr><td>14...</td><td>Opus</td><td>Nxe3</td><td>0</td><td>Trade the knight for White&#x27;s bishop rather than retreat.</td></tr>
+<tr><td>15.</td><td>Haiku</td><td>fxe3</td><td>2</td><td>Recapture the intruding knight; nothing defends it.</td></tr>
+<tr><td>15...</td><td>Opus</td><td>a6</td><td>0</td><td>Securing a7 against the open a-file rook.</td></tr>
+<tr><td>16.</td><td>Haiku</td><td>Rfd1</td><td>32</td><td>Developing the rook toward the centre while keeping everything protected.</td></tr>
+<tr><td>16...</td><td>Opus</td><td>c5</td><td>26</td><td>Gaining queenside space and keeping both bishops for counterplay.</td></tr>
+<tr class="bad"><td></td><td></td><td>dxc5</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>17.</td><td>Haiku</td><td>Rf1</td><td>8</td><td>Activating the rook to pressure the f-file.</td></tr>
+<tr><td>17...</td><td>Opus</td><td>Bg5</td><td>57</td><td>Trading the bishop for White&#x27;s last minor piece to simplify.</td></tr>
+<tr><td>18.</td><td>Haiku</td><td>Nxg5</td><td>0</td><td>Trading the bishop on g5 simplifies while I&#x27;m ahead in material.</td></tr>
+<tr><td>18...</td><td>Opus</td><td>hxg5</td><td>0</td><td>Recapturing the knight keeps material level, apart from the missing queen.</td></tr>
+<tr><td>19.</td><td>Haiku</td><td>Qa5</td><td>0</td><td>Queen to a5 hits a6 and c5, staying safe from pawns.</td></tr>
+<tr><td>19...</td><td>Opus</td><td>Rfc8</td><td>31</td><td>Reinforcing c7 and the queenside against White&#x27;s active queen.</td></tr>
+<tr class="bad"><td>20.</td><td>Haiku</td><td>Qb5</td><td>1453</td><td>Queen to b5 hits b7 and keeps it safe.</td></tr>
+<tr><td>20...</td><td>Opus</td><td>axb5</td><td>5</td><td>Free queen: the a6 pawn takes on b5.</td></tr>
+<tr><td>21.</td><td>Haiku</td><td>Rxa8</td><td>18</td><td>Trading rooks on the open a-file to contest activity.</td></tr>
+<tr><td>21...</td><td>Opus</td><td>Rxa8</td><td>12</td><td>The rook trade leaves us up material.</td></tr>
+<tr><td>22.</td><td>Haiku</td><td>Rc1</td><td>13</td><td>Rook to c1 defends c2 and contests the c-file.</td></tr>
+<tr><td>22...</td><td>Opus</td><td>Ra2</td><td>2</td><td>Activating the rook to hit b2 and press White&#x27;s queenside.</td></tr>
+<tr><td>23.</td><td>Haiku</td><td>Rb1</td><td>11</td><td>Defending b2 so the rook on a2 can&#x27;t win it.</td></tr>
+<tr><td>23...</td><td>Opus</td><td>c4</td><td>1</td><td>Opening lines with the pawn break, using my extra bishop.</td></tr>
+<tr><td>24.</td><td>Haiku</td><td>dxc4</td><td>38</td><td>Trade the c-pawn to open lines and challenge Black&#x27;s active pawn.</td></tr>
+<tr><td>24...</td><td>Opus</td><td>bxc4</td><td>8</td><td>Recapture on c4, opening lines and preparing to win pawns.</td></tr>
+<tr><td>25.</td><td>Haiku</td><td>Rd1</td><td>41</td><td>Activate the rook and attack the weak d6 pawn.</td></tr>
+<tr><td>25...</td><td>Opus</td><td>cxb3</td><td>0</td><td>Trading pawns opens the queenside for my rook.</td></tr>
+<tr><td>26.</td><td>Haiku</td><td>Rc1</td><td>34</td><td>Rc1 guards c2 against the b-pawn&#x27;s capture.</td></tr>
+<tr><td>26...</td><td>Opus</td><td>Rxb2</td><td>0</td><td>Grab the b-pawn; b3 and the bishop stay strong.</td></tr>
+<tr><td>27.</td><td>Haiku</td><td>Rd1</td><td>226</td><td>Rook to d1 attacks d6 and covers c1 against promotion.</td></tr>
+<tr><td>27...</td><td>Opus</td><td>Rxc2</td><td>0</td><td>Grabbing c2 clears the way for my b-pawn.</td></tr>
+<tr><td>28.</td><td>Haiku</td><td>Rb1</td><td>0</td><td>Contesting the b-pawn and covering the promotion square.</td></tr>
+<tr><td>28...</td><td>Opus</td><td>b2</td><td>0</td><td>Pushing the passed pawn; Rc1 next forces promotion.</td></tr>
+<tr><td>29.</td><td>Haiku</td><td>Re1</td><td>0</td><td>Stopping the b-pawn while keeping the rook active.</td></tr>
+<tr><td>29...</td><td>Opus</td><td>Rc1</td><td>0</td><td>Deflecting the rook so the b-pawn can promote.</td></tr>
+<tr><td>30.</td><td>Haiku</td><td>Rxc1</td><td>0</td><td>Rook takes rook, and the b-pawn can&#x27;t promote safely.</td></tr>
+<tr><td>30...</td><td>Opus</td><td>bxc1=Q+</td><td>0</td><td>Promote by capturing the rook, with check.</td></tr>
+<tr><td>31.</td><td>Haiku</td><td>Kh2</td><td>0</td><td>Stepping off the first rank to escape the queen&#x27;s check.</td></tr>
+<tr><td>31...</td><td>Opus</td><td>Qxe3</td><td>0</td><td>Grabbing a free pawn; White has only king and pawns.</td></tr>
+<tr><td>32.</td><td>Haiku</td><td>g4</td><td>0</td><td>Solid pawn chain; h3 stays defended by the king.</td></tr>
+<tr><td>32...</td><td>Opus</td><td>Qf2+</td><td>0</td><td>Checking the white king and starting the mating net.</td></tr>
+<tr><td>33.</td><td>Haiku</td><td>Kh1</td><td>0</td><td>Only legal escape from the queen check.</td></tr>
+<tr><td>33...</td><td>Opus</td><td>Qg3</td><td>0</td><td>Squeeze the king; avoid stalemate, mate follows shortly.</td></tr>
+<tr><td>34.</td><td>Haiku</td><td>h4</td><td>0</td><td>Only legal move: the king is boxed in, so h4 it is.</td></tr>
+<tr><td>34...</td><td>Opus</td><td>Bxg4</td><td>0</td><td>Bishop takes g4; Bf3# follows next move regardless.</td></tr>
+<tr><td>35.</td><td>Haiku</td><td>h5</td><td>0</td><td>Only legal move: the king is boxed in, and e4 is blocked.</td></tr>
+<tr><td>35...</td><td>Opus</td><td>Bf3#</td><td>0</td><td>Bishop check on the long diagonal; the queen covers every escape square.</td></tr>
+</table></details></section><section><h2>Step 4: Opus gives up queen + rook (d8, a8)</h2><p class="res">Draw · threefold repetition on move 23 · illegal tries: Haiku 1, Opus 0</p>
+<p>Haiku was up about +12 (Stockfish) and alternated 20.Bd6+ / 21.Bf4 / 22.Bd6+. Opus: &quot;a repetition would suit me fine&quot;. Threefold repetition, draw.</p>
+<p><a href="https://denzil10.github.io/claude-chess-engine/index.html?pgn=%5BFEN%20%221nb1kbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR%20w%20KQk%20-%200%201%22%5D%201.%20e4%20e5%202.%20Bc4%20Nf6%203.%20Nf3%20Nc6%204.%20Nc3%20Nxe4%205.%20Nxe4%20Be7%206.%20d4%20exd4%207.%20Nxd4%20d5%208.%20Bxd5%20Nxd4%209.%20Qxd4%20O-O%2010.%20Qe5%20Bd6%2011.%20Qxd6%20cxd6%2012.%20Nxd6%20Rd8%2013.%20Nxc8%20Rxd5%2014.%20Ne7%2B%20Kf8%2015.%20Nxd5%20Ke8%2016.%20Nf6%2B%20gxf6%2017.%20Bf4%20Ke7%2018.%20Rd1%20Ke6%2019.%20Rd4%20Ke7%2020.%20Bd6%2B%20Ke6%2021.%20Bf4%20Ke7%2022.%20Bd6%2B%20Ke6">Replay on a board</a> · <a href="games/r4.pgn">PGN</a> · <a href="games/r4.jsonl">full log (every prompt and reply)</a> · <a href="games/r4.eval.json">Stockfish review</a></p>
+<details><summary>Every move</summary><table><tr><td>#</td><td>side</td><td>move</td><td>loss</td><td>comment</td></tr>
+<tr><td>1.</td><td>Haiku</td><td>e4</td><td>0</td><td>Central pawn push to claim space and open lines.</td></tr>
+<tr><td>1...</td><td>Opus</td><td>e5</td><td>0</td><td>Solid central reply, aiming for quick development.</td></tr>
+<tr><td>2.</td><td>Haiku</td><td>Bc4</td><td>0</td><td>Bishop to c4 targets the weakened f7 square.</td></tr>
+<tr><td>2...</td><td>Opus</td><td>Nf6</td><td>0</td><td>Developing the knight, defending against early queen attacks.</td></tr>
+<tr><td>3.</td><td>Haiku</td><td>Nf3</td><td>0</td><td>Developing with tempo, attacking the e5 pawn.</td></tr>
+<tr><td>3...</td><td>Opus</td><td>Nc6</td><td>0</td><td>Developing the knight and defending e5, the solid choice.</td></tr>
+<tr><td>4.</td><td>Haiku</td><td>Nc3</td><td>0</td><td>Developing with a defender for the hanging e4 pawn.</td></tr>
+<tr><td>4...</td><td>Opus</td><td>Nxe4</td><td>0</td><td>Fork trick: if Nxe4, then d5 regains the piece.</td></tr>
+<tr><td>5.</td><td>Haiku</td><td>Nxe4</td><td>0</td><td>Nc3 attacks the undefended e4 knight; take it for free.</td></tr>
+<tr><td>5...</td><td>Opus</td><td>Be7</td><td>0</td><td>Developing the bishop to prepare castling and cover g5.</td></tr>
+<tr><td>6.</td><td>Haiku</td><td>d4</td><td>0</td><td>Striking the center to challenge Black&#x27;s e5 pawn.</td></tr>
+<tr><td>6...</td><td>Opus</td><td>exd4</td><td>0</td><td>Grab the central pawn; ...d5 forks may follow.</td></tr>
+<tr><td>7.</td><td>Haiku</td><td>Nxd4</td><td>0</td><td>Winning back the d-pawn with the knight, with the queen ready to recapture.</td></tr>
+<tr><td>7...</td><td>Opus</td><td>d5</td><td>0</td><td>Striking the center with d5 to fork White&#x27;s bishop and knight.</td></tr>
+<tr><td>8.</td><td>Haiku</td><td>Bxd5</td><td>0</td><td>Winning the d5 pawn and keeping my pieces active.</td></tr>
+<tr><td>8...</td><td>Opus</td><td>Nxd4</td><td>0</td><td>Trading knights to ease the pressure on c6.</td></tr>
+<tr><td>9.</td><td>Haiku</td><td>Qxd4</td><td>0</td><td>Winning the loose knight on d4 with the queen.</td></tr>
+<tr><td>9...</td><td>Opus</td><td>O-O</td><td>0</td><td>Castling to safety and guarding g7 against the queen.</td></tr>
+<tr class="bad"><td></td><td></td><td>Qg4</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>10.</td><td>Haiku</td><td>Qe5</td><td>0</td><td>Centralizing the queen attacks Be7 and keeps my pieces coordinated.</td></tr>
+<tr><td>10...</td><td>Opus</td><td>Bd6</td><td>0</td><td>Attack the queen with tempo and develop the bishop.</td></tr>
+<tr><td>11.</td><td>Haiku</td><td>Qxd6</td><td>0</td><td>Queen takes the undefended bishop on d6, winning material.</td></tr>
+<tr><td>11...</td><td>Opus</td><td>cxd6</td><td>0</td><td>Free queen: the c-pawn captures on d6.</td></tr>
+<tr><td>12.</td><td>Haiku</td><td>Nxd6</td><td>0</td><td>Knight takes the undefended d6 pawn, forking the Bc8 and f7.</td></tr>
+<tr><td>12...</td><td>Opus</td><td>Rd8</td><td>0</td><td>Pinning pressure: rook hits the knight, then the bishop behind.</td></tr>
+<tr><td>13.</td><td>Haiku</td><td>Nxc8</td><td>0</td><td>Trade the knight for Black&#x27;s last minor piece and escape the rook attack.</td></tr>
+<tr><td>13...</td><td>Opus</td><td>Rxd5</td><td>0</td><td>The bishop on d5 is unprotected, so the rook takes it.</td></tr>
+<tr><td>14.</td><td>Haiku</td><td>Ne7+</td><td>0</td><td>Knight to e7 checks the king and attacks the rook on d5.</td></tr>
+<tr><td>14...</td><td>Opus</td><td>Kf8</td><td>0</td><td>Forced king move; the rook on d5 is unfortunately lost.</td></tr>
+<tr><td>15.</td><td>Haiku</td><td>Nxd5</td><td>0</td><td>Knight takes the rook, and the knight is safe on d5.</td></tr>
+<tr><td>15...</td><td>Opus</td><td>Ke8</td><td>0</td><td>Only pawns left; centralizing my king for the endgame.</td></tr>
+<tr><td>16.</td><td>Haiku</td><td>Nf6+</td><td>0</td><td>Knight check forces the king to move and keeps pressure.</td></tr>
+<tr><td>16...</td><td>Opus</td><td>gxf6</td><td>0</td><td>Capturing the checking knight with the g-pawn.</td></tr>
+<tr><td>17.</td><td>Haiku</td><td>Bf4</td><td>0</td><td>Developing the bishop clears c1 for the rook.</td></tr>
+<tr><td>17...</td><td>Opus</td><td>Ke7</td><td>0</td><td>Centralizing the king; only pawns left to fight with.</td></tr>
+<tr><td>18.</td><td>Haiku</td><td>Rd1</td><td>0</td><td>Developing a rook to the open d-file to pressure Black&#x27;s king.</td></tr>
+<tr><td>18...</td><td>Opus</td><td>Ke6</td><td>0</td><td>Keeping my king active and covering d7.</td></tr>
+<tr><td>19.</td><td>Haiku</td><td>Rd4</td><td>0</td><td>Centralizing the rook safely, away from the king&#x27;s reach.</td></tr>
+<tr><td>19...</td><td>Opus</td><td>Ke7</td><td>0</td><td>Tucking the king back to safety, away from rook checks.</td></tr>
+<tr><td>20.</td><td>Haiku</td><td>Bd6+</td><td>0</td><td>Bishop check, supported by the rook, to gain tempo.</td></tr>
+<tr><td>20...</td><td>Opus</td><td>Ke6</td><td>0</td><td>Stepping out of check and hitting the bishop.</td></tr>
+<tr><td>21.</td><td>Haiku</td><td>Bf4</td><td>0</td><td>Retreat the bishop to safety so the rook on d4 is free to act.</td></tr>
+<tr><td>21...</td><td>Opus</td><td>Ke7</td><td>0</td><td>Keeping my king safe and off the open lines.</td></tr>
+<tr><td>22.</td><td>Haiku</td><td>Bd6+</td><td>0</td><td>Check with a protected bishop; the king can&#x27;t take on d6.</td></tr>
+<tr><td>22...</td><td>Opus</td><td>Ke6</td><td>0</td><td>Stepping back toward e6; a repetition would suit me fine.</td></tr>
+</table></details></section><section><h2>Step 5: Opus gives up queen + both rooks (d8, a8, h8)</h2><p class="res">Opus wins · checkmate on move 47 · illegal tries: Haiku 6, Opus 1</p>
+<p>Haiku put its rook on b1 in front of the a-pawn (&quot;covers a1, so the a-pawn can&#x27;t promote safely&quot;); 42...axb1=Q+ and mate on move 46.</p>
+<p><a href="https://denzil10.github.io/claude-chess-engine/index.html?pgn=%5BFEN%20%221nb1kbn1/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR%20w%20KQ%20-%200%201%22%5D%201.%20e4%20e5%202.%20Bc4%20Nf6%203.%20Nc3%20Nc6%204.%20Nf3%20Bc5%205.%20Ng5%20d5%206.%20Bxd5%20Nxd5%207.%20Qf3%20Be6%208.%20Nxf7%20Bxf7%209.%20Nxd5%20Bxd5%2010.%20d3%20Be6%2011.%20Be3%20Bxe3%2012.%20Qxe3%20Nd4%2013.%20Qd2%20Kf7%2014.%20c3%20Nc6%2015.%20O-O%20Kg8%2016.%20Rfe1%20h6%2017.%20Rf1%20Kh7%2018.%20Qg5%20hxg5%2019.%20d4%20exd4%2020.%20cxd4%20Nxd4%2021.%20Rfd1%20Nc6%2022.%20Rd6%20Bc4%2023.%20Rd7%20Be6%2024.%20Rxc7%20Nd8%2025.%20Rxb7%20Nxb7%2026.%20Rd1%20Nc5%2027.%20Rd6%20Bxa2%2028.%20Rd4%20Ne6%2029.%20Rd7%20a5%2030.%20e5%20a4%2031.%20Ra7%20Bb3%2032.%20Ra6%20Nf4%2033.%20g3%20Nd3%2034.%20Re6%20Nxb2%2035.%20Ra6%20Nc4%2036.%20e6%20Kg6%2037.%20Ra7%20Kf6%2038.%20e7%20Kf7%2039.%20Ra8%20Kxe7%2040.%20Rb8%20a3%2041.%20Rxb3%20a2%2042.%20Rb1%20axb1%3DQ%2B%2043.%20Kg2%20Qe4%2B%2044.%20Kg1%20Nd2%2045.%20f3%20Qxf3%2046.%20g4%20Qf1%23">Replay on a board</a> · <a href="games/r5.pgn">PGN</a> · <a href="games/r5.jsonl">full log (every prompt and reply)</a> · <a href="games/r5.eval.json">Stockfish review</a></p>
+<details><summary>Every move</summary><table><tr><td>#</td><td>side</td><td>move</td><td>loss</td><td>comment</td></tr>
+<tr><td>1.</td><td>Haiku</td><td>e4</td><td>0</td><td>Grab the center and open lines toward Black&#x27;s exposed king.</td></tr>
+<tr><td>1...</td><td>Opus</td><td>e5</td><td>0</td><td>Solid central reply, aiming for quick development.</td></tr>
+<tr><td>2.</td><td>Haiku</td><td>Bc4</td><td>0</td><td>Developing with an eye on f7, the weak point.</td></tr>
+<tr><td>2...</td><td>Opus</td><td>Nf6</td><td>0</td><td>Developing the knight to defend and eye e4.</td></tr>
+<tr class="bad"><td></td><td></td><td>Ng5</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>3.</td><td>Haiku</td><td>Nc3</td><td>0</td><td>Developing the knight and defending the e4 pawn.</td></tr>
+<tr><td>3...</td><td>Opus</td><td>Nc6</td><td>0</td><td>Developing naturally, keeping e5 protected.</td></tr>
+<tr><td>4.</td><td>Haiku</td><td>Nf3</td><td>0</td><td>Developing with pressure on the e5 pawn.</td></tr>
+<tr><td>4...</td><td>Opus</td><td>Bc5</td><td>0</td><td>Developing the bishop toward f2, keeping things solid.</td></tr>
+<tr><td>5.</td><td>Haiku</td><td>Ng5</td><td>0</td><td>Ng5 hits f7 twice, with Bc4 behind the knight.</td></tr>
+<tr><td>5...</td><td>Opus</td><td>d5</td><td>0</td><td>Blocking the bishop&#x27;s attack on f7 and freeing my bishop.</td></tr>
+<tr class="bad"><td></td><td></td><td>Bxf7+</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>6.</td><td>Haiku</td><td>Bxd5</td><td>0</td><td>Winning the hanging d5 pawn while attacking the knight on c6.</td></tr>
+<tr><td>6...</td><td>Opus</td><td>Nxd5</td><td>0</td><td>Capturing the bishop removes a dangerous attacker near f7.</td></tr>
+<tr><td>7.</td><td>Haiku</td><td>Qf3</td><td>0</td><td>Queen to f3 hits f7 twice and guards f2.</td></tr>
+<tr><td>7...</td><td>Opus</td><td>Be6</td><td>0</td><td>Be6 guards f7 and the d5 knight together.</td></tr>
+<tr><td>8.</td><td>Haiku</td><td>Nxf7</td><td>0</td><td>Nxf7 wins a pawn and attacks the king&#x27;s side; Bxf7 then Qxf7+ regains material.</td></tr>
+<tr><td>8...</td><td>Opus</td><td>Bxf7</td><td>0</td><td>Capturing the f7 knight removes the attacker from my king.</td></tr>
+<tr><td>9.</td><td>Haiku</td><td>Nxd5</td><td>0</td><td>Free knight: Nd5 is hanging to both my knight and e4 pawn.</td></tr>
+<tr><td>9...</td><td>Opus</td><td>Bxd5</td><td>0</td><td>Grabbing the centralized knight to win material back.</td></tr>
+<tr><td>10.</td><td>Haiku</td><td>d3</td><td>0</td><td>Solidly defends e4 and opens my bishop.</td></tr>
+<tr><td>10...</td><td>Opus</td><td>Be6</td><td>0</td><td>Retreating the bishop to e6 guards f7 and avoids the pawn attack.</td></tr>
+<tr><td>11.</td><td>Haiku</td><td>Be3</td><td>0</td><td>Developing with tempo, challenging the Bc5 while the king stays safe.</td></tr>
+<tr><td>11...</td><td>Opus</td><td>Bxe3</td><td>0</td><td>Trading bishops removes the attack on my c5 bishop.</td></tr>
+<tr><td>12.</td><td>Haiku</td><td>Qxe3</td><td>0</td><td>Free bishop: the Qf3 takes e3 with nothing defending it.</td></tr>
+<tr><td>12...</td><td>Opus</td><td>Nd4</td><td>0</td><td>Centralize the knight, eyeing a fork on c2.</td></tr>
+<tr class="bad"><td></td><td></td><td>Qf2</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>13.</td><td>Haiku</td><td>Qd2</td><td>0</td><td>Queen guards c2 against the knight fork.</td></tr>
+<tr><td>13...</td><td>Opus</td><td>Kf7</td><td>0</td><td>Kf7 safeguards the king and connects my pieces, guarding g7.</td></tr>
+<tr><td>14.</td><td>Haiku</td><td>c3</td><td>0</td><td>Kicking the knight with c3 while keeping my pawns protected.</td></tr>
+<tr><td>14...</td><td>Opus</td><td>Nc6</td><td>0</td><td>Retreating the attacked knight to safety.</td></tr>
+<tr><td>15.</td><td>Haiku</td><td>O-O</td><td>0</td><td>Castling kingside tucks the king away and activates the rook.</td></tr>
+<tr><td>15...</td><td>Opus</td><td>Kg8</td><td>0</td><td>Stepping off the f-file before White&#x27;s f4 break opens it.</td></tr>
+<tr class="bad"><td></td><td></td><td>Rf3</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>16.</td><td>Haiku</td><td>Rfe1</td><td>0</td><td>Rooks join the attack and press the e-file.</td></tr>
+<tr><td>16...</td><td>Opus</td><td>h6</td><td>0</td><td>Creating luft to avoid back-rank trouble.</td></tr>
+<tr><td>17.</td><td>Haiku</td><td>Rf1</td><td>0</td><td>Activating the rook toward the open f-file and Black&#x27;s king.</td></tr>
+<tr><td>17...</td><td>Opus</td><td>Kh7</td><td>0</td><td>Solid development; king safe, keep pieces coordinated.</td></tr>
+<tr><td>18.</td><td>Haiku</td><td>Qg5</td><td>220</td><td>Queen to g5: safe from the bishop and knight, and it attacks e5 and h6.</td></tr>
+<tr><td>18...</td><td>Opus</td><td>hxg5</td><td>0</td><td>The queen on g5 is hanging to my h-pawn.</td></tr>
+<tr class="bad"><td></td><td></td><td>e5</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>19.</td><td>Haiku</td><td>d4</td><td>48</td><td>Challenging the e5 pawn to open lines for my rooks.</td></tr>
+<tr><td>19...</td><td>Opus</td><td>exd4</td><td>2</td><td>Opening the center wins a pawn; my knight eyes d4.</td></tr>
+<tr><td>20.</td><td>Haiku</td><td>cxd4</td><td>3</td><td>Capturing the d4 pawn regains material and opens the c-file.</td></tr>
+<tr><td>20...</td><td>Opus</td><td>Nxd4</td><td>5</td><td>Grabbing the undefended d4 pawn with my knight.</td></tr>
+<tr><td>21.</td><td>Haiku</td><td>Rfd1</td><td>2</td><td>Rook to d1 attacks the undefended knight on d4.</td></tr>
+<tr><td>21...</td><td>Opus</td><td>Nc6</td><td>28</td><td>Retreating the attacked knight to safety, keeping material.</td></tr>
+<tr class="bad"><td>22.</td><td>Haiku</td><td>Rd6</td><td>739</td><td>Rd6 attacks the loose bishop on e6 and threatens to win it.</td></tr>
+<tr class="bad"><td>22...</td><td>Opus</td><td>Bc4</td><td>757</td><td>Saving the attacked bishop while it eyes White&#x27;s queenside.</td></tr>
+<tr><td>23.</td><td>Haiku</td><td>Rd7</td><td>0</td><td>Rook to d7 hits c7 and pressures the seventh rank.</td></tr>
+<tr><td>23...</td><td>Opus</td><td>Be6</td><td>26</td><td>Bishop to e6 hits the rook on d7.</td></tr>
+<tr><td>24.</td><td>Haiku</td><td>Rxc7</td><td>1</td><td>Winning a pawn with the rook; nothing is defended.</td></tr>
+<tr><td>24...</td><td>Opus</td><td>Nd8</td><td>17</td><td>Knight to d8 guards b7 and e6, keeping everything protected.</td></tr>
+<tr><td>25.</td><td>Haiku</td><td>Rxb7</td><td>240</td><td>Winning the b7 pawn with the active rook.</td></tr>
+<tr><td>25...</td><td>Opus</td><td>Nxb7</td><td>0</td><td>Knight captures the undefended rook on b7.</td></tr>
+<tr><td>26.</td><td>Haiku</td><td>Rd1</td><td>41</td><td>Rook to the open d-file, aiming at the knight on b7.</td></tr>
+<tr><td>26...</td><td>Opus</td><td>Nc5</td><td>34</td><td>Centralizing the knight, guarding d7 and hitting e4.</td></tr>
+<tr><td>27.</td><td>Haiku</td><td>Rd6</td><td>212</td><td>Rook to d6 hits the undefended-by-rook bishop and gains activity.</td></tr>
+<tr><td>27...</td><td>Opus</td><td>Bxa2</td><td>110</td><td>Grabbing the a2 pawn while my knight guards the bishop.</td></tr>
+<tr><td>28.</td><td>Haiku</td><td>Rd4</td><td>221</td><td>Rook to d4 guards e4 and stays out of the bishop&#x27;s reach.</td></tr>
+<tr><td>28...</td><td>Opus</td><td>Ne6</td><td>251</td><td>Knight hits the rook and guards g5.</td></tr>
+<tr><td>29.</td><td>Haiku</td><td>Rd7</td><td>10</td><td>Rook to d7 attacks the loose a7 pawn.</td></tr>
+<tr><td>29...</td><td>Opus</td><td>a5</td><td>0</td><td>A runner on a5 saves the a-pawn and pushes for queen.</td></tr>
+<tr class="bad"><td>30.</td><td>Haiku</td><td>e5</td><td>415</td><td>Kick the knight and push the e-pawn toward promotion.</td></tr>
+<tr><td>30...</td><td>Opus</td><td>a4</td><td>0</td><td>Pushing the passed a-pawn while the bishop guards it.</td></tr>
+<tr><td>31.</td><td>Haiku</td><td>Ra7</td><td>31</td><td>Winning the a-pawn while keeping the rook safe.</td></tr>
+<tr><td>31...</td><td>Opus</td><td>Bb3</td><td>0</td><td>Defending the a4 pawn with the bishop, keeping my pieces coordinated.</td></tr>
+<tr><td>32.</td><td>Haiku</td><td>Ra6</td><td>0</td><td>Rook to a6 attacks the undefended knight on e6.</td></tr>
+<tr><td>32...</td><td>Opus</td><td>Nf4</td><td>25</td><td>Knight to f4, protected by g5, eyeing d3 and e2.</td></tr>
+<tr><td>33.</td><td>Haiku</td><td>g3</td><td>34</td><td>Kicking the knight with g3 while keeping my king safe.</td></tr>
+<tr><td>33...</td><td>Opus</td><td>Nd3</td><td>9</td><td>Knight dodges the pawn and hits b2, e5 and f2.</td></tr>
+<tr class="bad"><td>34.</td><td>Haiku</td><td>Re6</td><td>1000</td><td>Defending the e5 pawn from behind before Black&#x27;s knight takes it.</td></tr>
+<tr class="bad"><td>34...</td><td>Opus</td><td>Nxb2</td><td>702</td><td>Grabbing the b2 pawn to clear the a-pawn&#x27;s path.</td></tr>
+<tr><td>35.</td><td>Haiku</td><td>Ra6</td><td>0</td><td>Rook to a6 blockades the a-pawn and attacks a4.</td></tr>
+<tr><td>35...</td><td>Opus</td><td>Nc4</td><td>0</td><td>Knight to c4 hits e5 and supports the a-pawn&#x27;s advance.</td></tr>
+<tr><td>36.</td><td>Haiku</td><td>e6</td><td>13</td><td>Passed pawn push; the rook on a6 guards e6.</td></tr>
+<tr><td>36...</td><td>Opus</td><td>Kg6</td><td>4</td><td>King heads to f7 to stop the e-pawn.</td></tr>
+<tr><td>37.</td><td>Haiku</td><td>Ra7</td><td>0</td><td>Rook to the 7th cuts off Kf7 and backs up the e-pawn.</td></tr>
+<tr><td>37...</td><td>Opus</td><td>Kf6</td><td>30</td><td>Kf6 attacks the e6 pawn and guards e7 and g7.</td></tr>
+<tr><td>38.</td><td>Haiku</td><td>e7</td><td>12</td><td>Pushing the passed pawn, protected by the rook on a7.</td></tr>
+<tr><td>38...</td><td>Opus</td><td>Kf7</td><td>4</td><td>My king steps to f7 to stop the pawn from queening.</td></tr>
+<tr><td>39.</td><td>Haiku</td><td>Ra8</td><td>88</td><td>Rook to the eighth rank supports the e-pawn&#x27;s promotion.</td></tr>
+<tr><td>39...</td><td>Opus</td><td>Kxe7</td><td>0</td><td>Capturing the dangerous e7 pawn before it promotes.</td></tr>
+<tr><td>40.</td><td>Haiku</td><td>Rb8</td><td>23</td><td>Hitting the loose bishop on b3 with the rook.</td></tr>
+<tr class="bad"><td></td><td></td><td>Bd5</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr class="bad"><td>40...</td><td>Opus</td><td>a3</td><td>563</td><td>Pushing the passed a-pawn, which the bishop covers.</td></tr>
+<tr class="bad"><td></td><td></td><td>Rb1</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>41.</td><td>Haiku</td><td>Rxb3</td><td>17</td><td>Winning the bishop and attacking the a-pawn at once.</td></tr>
+<tr class="bad"><td>41...</td><td>Opus</td><td>a2</td><td>469</td><td>Pushing the a-pawn; the knight guards a3 and stops Ra3.</td></tr>
+<tr class="bad"><td>42.</td><td>Haiku</td><td>Rb1</td><td>1554</td><td>Rook to b1 covers a1, so the a-pawn can&#x27;t promote safely.</td></tr>
+<tr><td>42...</td><td>Opus</td><td>axb1=Q+</td><td>0</td><td>Promoting while capturing the rook wins decisively.</td></tr>
+<tr><td>43.</td><td>Haiku</td><td>Kg2</td><td>0</td><td>King must step out of the queen&#x27;s check along the first rank.</td></tr>
+<tr><td>43...</td><td>Opus</td><td>Qe4+</td><td>0</td><td>Centralizing the queen with check to push toward mate.</td></tr>
+<tr><td>44.</td><td>Haiku</td><td>Kg1</td><td>0</td><td>Stepping to the corner away from the queen&#x27;s diagonal.</td></tr>
+<tr><td>44...</td><td>Opus</td><td>Nd2</td><td>0</td><td>Knight heads toward f3 to hunt the white king.</td></tr>
+<tr><td>45.</td><td>Haiku</td><td>f3</td><td>0</td><td>Blocking the queen&#x27;s diagonal to g2 and h1 to free my king.</td></tr>
+<tr><td>45...</td><td>Opus</td><td>Qxf3</td><td>0</td><td>Grabbing f3 with knight support, threatening Qf1 mate.</td></tr>
+<tr><td>46.</td><td>Haiku</td><td>g4</td><td>0</td><td>Forced: my king has no safe squares, so I&#x27;ll advance the g-pawn.</td></tr>
+<tr><td>46...</td><td>Opus</td><td>Qf1#</td><td>0</td><td>Queen lands on f1, protected by the knight: checkmate.</td></tr>
+</table></details></section><section><h2>Step 6: Opus gives up queen, both rooks, both bishops (d8, a8, h8, c8, f8)</h2><p class="res">Haiku wins · checkmate on move 74 · illegal tries: Haiku 4, Opus 2</p>
+<p>Haiku gave its queen for a knight (27.Qxf6 gxf6) and its rook for a pawn (42.Rxg5+), then promoted the a-pawn and mated on move 74.</p>
+<p><a href="https://denzil10.github.io/claude-chess-engine/index.html?pgn=%5BFEN%20%221n2k1n1/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR%20w%20KQ%20-%200%201%22%5D%201.%20e4%20e5%202.%20Bc4%20Nf6%203.%20Nf3%20Nc6%204.%20Ng5%20d5%205.%20Bxd5%20Nxd5%206.%20Qf3%20Nf6%207.%20d4%20Nd8%208.%20Nc3%20h6%209.%20Nh3%20exd4%2010.%20Nd5%20Nxd5%2011.%20O-O%20Nf6%2012.%20Bf4%20Ne6%2013.%20Bxc7%20Nxc7%2014.%20Qd3%20Ne6%2015.%20Qb5%2B%20Kf8%2016.%20Qxb7%20Nc5%2017.%20Qb8%2B%20Ne8%2018.%20Ng5%20hxg5%2019.%20Qe5%20Ne6%2020.%20Rad1%20Nf6%2021.%20Qd6%2B%20Kg8%2022.%20Rxd4%20Nxd4%2023.%20Qxd4%20a6%2024.%20Qd8%2B%20Kh7%2025.%20Qd3%20Kg8%2026.%20Qd8%2B%20Kh7%2027.%20Qxf6%20gxf6%2028.%20Rd1%20Kg6%2029.%20Rd6%20a5%2030.%20Kf1%20a4%2031.%20e5%20Kf5%2032.%20Rd5%20Ke6%2033.%20Rd4%20Kxe5%2034.%20Rxa4%20Kd5%2035.%20c4%2B%20Kc5%2036.%20b3%20Kb6%2037.%20Rb4%2B%20Kc5%2038.%20Rb7%20Kd4%2039.%20Rxf7%20Ke5%2040.%20Rg7%20Kf5%2041.%20Ke2%20Ke5%2042.%20Rxg5%2B%20fxg5%2043.%20Kd3%20Kf4%2044.%20a4%20Ke5%2045.%20Ke3%20Kf5%2046.%20f4%20gxf4%2B%2047.%20Kf3%20Ke5%2048.%20g3%20fxg3%2049.%20Kxg3%20Kd4%2050.%20h4%20Kc3%2051.%20a5%20Kxb3%2052.%20a6%20Kxc4%2053.%20a7%20Kb5%2054.%20a8%3DQ%20Kc4%2055.%20Qa4%2B%20Kd5%2056.%20Qb5%2B%20Kd4%2057.%20Qb3%20Ke4%2058.%20Qb4%2B%20Kd5%2059.%20Kf4%20Ke6%2060.%20Qb6%2B%20Kd5%2061.%20Kf5%20Kc4%2062.%20Ke4%20Kc3%2063.%20Qb5%20Kc2%2064.%20Ke3%20Kc3%2065.%20Qc5%2B%20Kb3%2066.%20Kd3%20Kb2%2067.%20Qc2%2B%20Ka3%2068.%20Qb1%20Ka4%2069.%20Qb2%20Ka5%2070.%20Kc4%20Ka6%2071.%20Qb5%2B%20Ka7%2072.%20Kc5%20Ka8%2073.%20Kb6%20Kb8%2074.%20Qe8%23">Replay on a board</a> · <a href="games/r6.pgn">PGN</a> · <a href="games/r6.jsonl">full log (every prompt and reply)</a> · <a href="games/r6.eval.json">Stockfish review</a></p>
+<details><summary>Every move</summary><table><tr><td>#</td><td>side</td><td>move</td><td>loss</td><td>comment</td></tr>
+<tr><td>1.</td><td>Haiku</td><td>e4</td><td>0</td><td>Central pawn grab opens lines for my bishop and queen.</td></tr>
+<tr><td>1...</td><td>Opus</td><td>e5</td><td>0</td><td>Contest the center and free development.</td></tr>
+<tr><td>2.</td><td>Haiku</td><td>Bc4</td><td>0</td><td>Developing toward f7 while Black&#x27;s queen and rooks are gone.</td></tr>
+<tr><td>2...</td><td>Opus</td><td>Nf6</td><td>0</td><td>Develop the knight, defend f7 indirectly, and control center.</td></tr>
+<tr class="bad"><td></td><td></td><td>Ng5</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>3.</td><td>Haiku</td><td>Nf3</td><td>0</td><td>Developing with Nf3, hitting the e5 pawn and preparing to castle.</td></tr>
+<tr><td>3...</td><td>Opus</td><td>Nc6</td><td>0</td><td>Defending e5 while developing the knight.</td></tr>
+<tr><td>4.</td><td>Haiku</td><td>Ng5</td><td>0</td><td>Knight to g5 doubles on f7, which Black can barely defend.</td></tr>
+<tr><td>4...</td><td>Opus</td><td>d5</td><td>0</td><td>Blocking the bishop&#x27;s diagonal and challenging the center immediately.</td></tr>
+<tr><td>5.</td><td>Haiku</td><td>Bxd5</td><td>0</td><td>Winning a pawn and keeping pressure on f7.</td></tr>
+<tr><td>5...</td><td>Opus</td><td>Nxd5</td><td>0</td><td>Trade off the bishop eyeing f7 and the c6 knight.</td></tr>
+<tr><td>6.</td><td>Haiku</td><td>Qf3</td><td>0</td><td>Queen to f3 doubles on f7, threatening Nxf7 with the knight protected.</td></tr>
+<tr><td>6...</td><td>Opus</td><td>Nf6</td><td>0</td><td>Retreating the knight blocks the f-file and guards f7.</td></tr>
+<tr class="bad"><td></td><td></td><td>Qxf7+</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>7.</td><td>Haiku</td><td>d4</td><td>0</td><td>Opening the c1-bishop and challenging the e5 pawn.</td></tr>
+<tr><td>7...</td><td>Opus</td><td>Nd8</td><td>0</td><td>Defending f7 against the queen and knight attack.</td></tr>
+<tr><td>8.</td><td>Haiku</td><td>Nc3</td><td>0</td><td>Developing the knight and supporting the e4 pawn.</td></tr>
+<tr><td>8...</td><td>Opus</td><td>h6</td><td>0</td><td>Kicking the knight away from its attacks on f7.</td></tr>
+<tr><td>9.</td><td>Haiku</td><td>Nh3</td><td>0</td><td>Knight must retreat from the h6 pawn&#x27;s attack.</td></tr>
+<tr><td>9...</td><td>Opus</td><td>exd4</td><td>0</td><td>Capturing the centre pawn and attacking the knight on c3.</td></tr>
+<tr><td>10.</td><td>Haiku</td><td>Nd5</td><td>0</td><td>Knight retreats with tempo, eyeing c7 and the Nf6.</td></tr>
+<tr><td>10...</td><td>Opus</td><td>Nxd5</td><td>0</td><td>Trading off White&#x27;s active knight relieves the pressure on c7.</td></tr>
+<tr><td>11.</td><td>Haiku</td><td>O-O</td><td>0</td><td>Castling safely, bringing the rook into play and getting the king out of the center.</td></tr>
+<tr><td>11...</td><td>Opus</td><td>Nf6</td><td>0</td><td>Retreating the knight from the pawn attack to a safe square.</td></tr>
+<tr><td>12.</td><td>Haiku</td><td>Bf4</td><td>0</td><td>Bf4 develops and eyes the undefended c7 pawn.</td></tr>
+<tr><td>12...</td><td>Opus</td><td>Ne6</td><td>0</td><td>Knight to e6 hits the bishop and shields c7 and the e-file.</td></tr>
+<tr><td>13.</td><td>Haiku</td><td>Bxc7</td><td>0</td><td>Winning a free pawn while the bishop stays safe.</td></tr>
+<tr><td>13...</td><td>Opus</td><td>Nxc7</td><td>0</td><td>Grabbing the loose bishop on c7.</td></tr>
+<tr><td>14.</td><td>Haiku</td><td>Qd3</td><td>0</td><td>Queen defends e4 and eyes the d4 pawn.</td></tr>
+<tr><td>14...</td><td>Opus</td><td>Ne6</td><td>0</td><td>Knight to e6 guards the d4 pawn and keeps my pieces together.</td></tr>
+<tr><td>15.</td><td>Haiku</td><td>Qb5+</td><td>0</td><td>Check on the e8-king, then I&#x27;ll pick up loose pawns.</td></tr>
+<tr><td>15...</td><td>Opus</td><td>Kf8</td><td>0</td><td>Sidestepping the check; the king is safe on f8.</td></tr>
+<tr><td>16.</td><td>Haiku</td><td>Qxb7</td><td>0</td><td>Grabbing the loose b7 pawn with the queen while Black is stretched.</td></tr>
+<tr><td>16...</td><td>Opus</td><td>Nc5</td><td>0</td><td>Knight hits the queen and eyes the e4 pawn.</td></tr>
+<tr><td>17.</td><td>Haiku</td><td>Qb8+</td><td>0</td><td>Checking the king with the queen forces Black to react.</td></tr>
+<tr><td>17...</td><td>Opus</td><td>Ne8</td><td>0</td><td>Blocking the check with the knight; the king defends it.</td></tr>
+<tr><td>18.</td><td>Haiku</td><td>Ng5</td><td>0</td><td>Developing toward f7 and e6 to pressure the king.</td></tr>
+<tr><td>18...</td><td>Opus</td><td>hxg5</td><td>0</td><td>Grabbing the loose knight on g5.</td></tr>
+<tr><td>19.</td><td>Haiku</td><td>Qe5</td><td>0</td><td>Queen to e5 hits both loose knights and keeps the position under control.</td></tr>
+<tr><td>19...</td><td>Opus</td><td>Ne6</td><td>0</td><td>Ne6 shields the knight and guards d4, g5 and g7 solidly.</td></tr>
+<tr class="bad"><td></td><td></td><td>Qh8+</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>20.</td><td>Haiku</td><td>Rad1</td><td>0</td><td>Adding a rook against d4, which is attacked twice and defended once.</td></tr>
+<tr><td>20...</td><td>Opus</td><td>Nf6</td><td>0</td><td>Developing the knight to f6, hitting e4 and guarding the king.</td></tr>
+<tr><td>21.</td><td>Haiku</td><td>Qd6+</td><td>0</td><td>Check on the f8-a3 diagonal; d6 is safe.</td></tr>
+<tr><td>21...</td><td>Opus</td><td>Kg8</td><td>0</td><td>The king steps to safety, away from the central files.</td></tr>
+<tr><td>22.</td><td>Haiku</td><td>Rxd4</td><td>0</td><td>Taking the loose d4 pawn; the rook also guards e4.</td></tr>
+<tr><td>22...</td><td>Opus</td><td>Nxd4</td><td>0</td><td>Knight grabs the undefended rook on d4.</td></tr>
+<tr><td>23.</td><td>Haiku</td><td>Qxd4</td><td>0</td><td>Queen takes the undefended knight on d4.</td></tr>
+<tr><td>23...</td><td>Opus</td><td>a6</td><td>0</td><td>Saving the a-pawn from the queen&#x27;s diagonal.</td></tr>
+<tr><td>24.</td><td>Haiku</td><td>Qd8+</td><td>0</td><td>Check on the back rank wins material.</td></tr>
+<tr><td>24...</td><td>Opus</td><td>Kh7</td><td>0</td><td>The king steps out of check; blocking with the knight would lose it.</td></tr>
+<tr><td>25.</td><td>Haiku</td><td>Qd3</td><td>0</td><td>Queen to d3, setting up e5 with discovered check on h7.</td></tr>
+<tr><td>25...</td><td>Opus</td><td>Kg8</td><td>0</td><td>Stepping the king off the b1-h7 diagonal to avoid the e5 discovery.</td></tr>
+<tr><td>26.</td><td>Haiku</td><td>Qd8+</td><td>0</td><td>Forcing check; if Ne8 blocks, the knight falls to Qxe8+.</td></tr>
+<tr><td>26...</td><td>Opus</td><td>Kh7</td><td>0</td><td>Kh7 steps out of check and keeps my knight.</td></tr>
+<tr><td>27.</td><td>Haiku</td><td>Qxf6</td><td>74</td><td>Winning the last knight; Black&#x27;s position collapses.</td></tr>
+<tr><td>27...</td><td>Opus</td><td>gxf6</td><td>74</td><td>The queen hung on f6, so the g-pawn captures it.</td></tr>
+<tr><td>28.</td><td>Haiku</td><td>Rd1</td><td>0</td><td>Activating the rook toward the d-file and the seventh rank.</td></tr>
+<tr><td>28...</td><td>Opus</td><td>Kg6</td><td>0</td><td>Bring the king toward the center to fight the rook.</td></tr>
+<tr><td>29.</td><td>Haiku</td><td>Rd6</td><td>0</td><td>Rook to d6 pressures the f6 pawn and clears the way for e5.</td></tr>
+<tr><td>29...</td><td>Opus</td><td>a5</td><td>0</td><td>Saving the a-pawn from the rook; my king guards the kingside.</td></tr>
+<tr><td>30.</td><td>Haiku</td><td>Kf1</td><td>0</td><td>Activating my king toward the centre while Black has no pieces.</td></tr>
+<tr><td>30...</td><td>Opus</td><td>a4</td><td>0</td><td>Pushing the passed pawn while my king guards f6.</td></tr>
+<tr><td>31.</td><td>Haiku</td><td>e5</td><td>102</td><td>Advance the e-pawn, supported by the rook on d6.</td></tr>
+<tr class="bad"><td></td><td></td><td>fxe5</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>31...</td><td>Opus</td><td>Kf5</td><td>93</td><td>The f6 pawn is pinned, so my king steps forward instead.</td></tr>
+<tr><td>32.</td><td>Haiku</td><td>Rd5</td><td>3</td><td>Rook to d5 defends e5 and blocks the king&#x27;s capture.</td></tr>
+<tr><td>32...</td><td>Opus</td><td>Ke6</td><td>12</td><td>Attacking the rook and the e5 pawn together.</td></tr>
+<tr><td>33.</td><td>Haiku</td><td>Rd4</td><td>27</td><td>Rook was hanging to the king; retreating to attack a4.</td></tr>
+<tr><td>33...</td><td>Opus</td><td>Kxe5</td><td>27</td><td>Capturing the e5 pawn and hitting the rook.</td></tr>
+<tr><td>34.</td><td>Haiku</td><td>Rxa4</td><td>93</td><td>Rook was attacked by the king; capturing the a-pawn also escapes.</td></tr>
+<tr><td>34...</td><td>Opus</td><td>Kd5</td><td>4</td><td>Black king e5, pawns f7, f6, g5. White rook a4, pawns a2,b2,c2,f2,g2,h2, king f1. Lost position, just play reasonable. Kd5 centralizes; f5 ok. Play Kd5.</td></tr>
+<tr><td>35.</td><td>Haiku</td><td>c4+</td><td>9</td><td>Pawn check, protected by the rook on a4.</td></tr>
+<tr><td>35...</td><td>Opus</td><td>Kc5</td><td>22</td><td>Keep the king active and pressure the c4 pawn.</td></tr>
+<tr><td>36.</td><td>Haiku</td><td>b3</td><td>7</td><td>Protecting c4 and the rook with a pawn.</td></tr>
+<tr><td>36...</td><td>Opus</td><td>Kb6</td><td>23</td><td>Losing endgame; my king heads toward White&#x27;s queenside pawns.</td></tr>
+<tr><td>37.</td><td>Haiku</td><td>Rb4+</td><td>0</td><td>Check on the b-file to drive the king back.</td></tr>
+<tr><td>37...</td><td>Opus</td><td>Kc5</td><td>0</td><td>Black king in check from rook on b4. Moves: Ka5, Ka6, Ka7, Kc5, Kc6, Kc7. Kc5 is attacked? Rook b4 attacks b-file and 4th rank; c5 not attacked by rook; pawn b3? no, pawn c4 doesn&#x27;t attack c5... pawn on b4? no. Kc5 adjacent to b4 rook — king can capture? No, Kc5 attacks b4, fine. Kc5 is legal but pointless. Ka5 attacks b4 too. Best is Kc5 keeping central activity, or Kc6. Kc5 attacks rook; rook must move. Fine.</td></tr>
+<tr><td>38.</td><td>Haiku</td><td>Rb7</td><td>0</td><td>Rook steps off the king&#x27;s reach while hitting the f7 pawn.</td></tr>
+<tr class="bad"><td></td><td></td><td>Ke6</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>38...</td><td>Opus</td><td>Kd4</td><td>0</td><td>Centralizing the king to harass White&#x27;s queenside pawns.</td></tr>
+<tr><td>39.</td><td>Haiku</td><td>Rxf7</td><td>0</td><td>Winning the f7 pawn with the rook, keeping Black&#x27;s material down.</td></tr>
+<tr><td>39...</td><td>Opus</td><td>Ke5</td><td>0</td><td>Black: Kd4, pawns f6, g5. White rook on f7 attacks f6. Options: Kc3 attacking b3? Ke5 defends f6. Ke5 protects f6. Then rook... fine. Kd3 heading to c2? Let&#x27;s just defend: Ke5.</td></tr>
+<tr><td>40.</td><td>Haiku</td><td>Rg7</td><td>0</td><td>Rook to g7 attacks the undefended g5 pawn.</td></tr>
+<tr><td>40...</td><td>Opus</td><td>Kf5</td><td>0</td><td>Kf5 guards both pawns.</td></tr>
+<tr><td>41.</td><td>Haiku</td><td>Ke2</td><td>0</td><td>Centralizing the king to support my pawns and rook.</td></tr>
+<tr><td>41...</td><td>Opus</td><td>Ke5</td><td>0</td><td>Centralizing the king; the f6 pawn still guards g5.</td></tr>
+<tr><td>42.</td><td>Haiku</td><td>Rxg5+</td><td>86</td><td>Rook takes the g5 pawn with check, winning material.</td></tr>
+<tr><td>42...</td><td>Opus</td><td>fxg5</td><td>0</td><td>Rook on g5 checks king on e5. Black king e5 options: d4, d6, e6, e4, f4, d5? d5 attacked by c4 pawn? c4 attacks b5,d5. Yes. f6 pawn could capture g5: fxg5. Is g5 protected? No white piece defends g5. Take it.</td></tr>
+<tr><td>43.</td><td>Haiku</td><td>Kd3</td><td>175</td><td>Activating the king toward the center and queenside pawns.</td></tr>
+<tr><td>43...</td><td>Opus</td><td>Kf4</td><td>283</td><td>Losing king-and-pawn ending; keep the king active.</td></tr>
+<tr><td>44.</td><td>Haiku</td><td>a4</td><td>0</td><td>Advance the a-pawn while the kingside pawns hold the g-pawn.</td></tr>
+<tr><td>44...</td><td>Opus</td><td>Ke5</td><td>0</td><td>Heading back to fight the queenside pawns, though it&#x27;s likely lost.</td></tr>
+<tr><td>45.</td><td>Haiku</td><td>Ke3</td><td>0</td><td>Centralizing the king to support the pawns and restrict Black&#x27;s king.</td></tr>
+<tr><td>45...</td><td>Opus</td><td>Kf5</td><td>0</td><td>Lost position; Black only has a king and g-pawn. Legal moves: Kd6, Kf5, Kf6, Ke6, Kd5? Kd5 not adjacent to e3? d5... e3 king covers d4,e4,f4. d5 is fine. Pick Kf5.</td></tr>
+<tr><td>46.</td><td>Haiku</td><td>f4</td><td>35</td><td>Trading the g-pawn opens the way to a simple pawn-up ending.</td></tr>
+<tr><td>46...</td><td>Opus</td><td>gxf4+</td><td>35</td><td>Trading off the g-pawn before White&#x27;s king wins it.</td></tr>
+<tr class="bad"><td></td><td></td><td>g3</td><td></td><td>ILLEGAL, try 1</td></tr>
+<tr><td>47.</td><td>Haiku</td><td>Kf3</td><td>0</td><td>Stepping toward the f-pawn while escaping check.</td></tr>
+<tr><td>47...</td><td>Opus</td><td>Ke5</td><td>0</td><td>Heading toward the queenside to slow White&#x27;s pawns.</td></tr>
+<tr><td>48.</td><td>Haiku</td><td>g3</td><td>163</td><td>Attack the f4 pawn to open the way to winning the extra pawns.</td></tr>
+<tr><td>48...</td><td>Opus</td><td>fxg3</td><td>163</td><td>Trading my last pawn; the position is likely lost anyway.</td></tr>
+<tr><td>49.</td><td>Haiku</td><td>Kxg3</td><td>0</td><td>Capturing the passed pawn before it promotes.</td></tr>
+<tr><td>49...</td><td>Opus</td><td>Kd4</td><td>0</td><td>Lone king versus three pawns; I&#x27;ll head toward the queenside.</td></tr>
+<tr><td>50.</td><td>Haiku</td><td>h4</td><td>0</td><td>Advancing the h-pawn safely; c4 stays protected by b3.</td></tr>
+<tr><td>50...</td><td>Opus</td><td>Kc3</td><td>0</td><td>Grabbing queenside pawns is my only practical try for counterplay.</td></tr>
+<tr><td>51.</td><td>Haiku</td><td>a5</td><td>0</td><td>Pawns race: a5 starts advancing while b3 is lost.</td></tr>
+<tr><td>51...</td><td>Opus</td><td>Kxb3</td><td>0</td><td>Grabbing the loose b-pawn; few practical chances remain.</td></tr>
+<tr><td>52.</td><td>Haiku</td><td>a6</td><td>0</td><td>Race the a-pawn; the black king can&#x27;t catch it.</td></tr>
+<tr><td>52...</td><td>Opus</td><td>Kxc4</td><td>0</td><td>Grabbing the c-pawn; the a-pawn is unstoppable, sadly.</td></tr>
+<tr><td>53.</td><td>Haiku</td><td>a7</td><td>0</td><td>Promoting the a-pawn; Black&#x27;s king is too far to stop it.</td></tr>
+<tr><td>53...</td><td>Opus</td><td>Kb5</td><td>0</td><td>The pawn queens next move; I&#x27;ll still head toward it.</td></tr>
+<tr><td>54.</td><td>Haiku</td><td>a8=Q</td><td>0</td><td>Promoting now; the queen wins easily.</td></tr>
+<tr><td>54...</td><td>Opus</td><td>Kc4</td><td>0</td><td>Lost position, but I&#x27;ll keep my king central and fight on.</td></tr>
+<tr><td>55.</td><td>Haiku</td><td>Qa4+</td><td>0</td><td>Check on the fourth rank, restricting the black king.</td></tr>
+<tr><td>55...</td><td>Opus</td><td>Kd5</td><td>0</td><td>Centralizing the king to stay away from the queen.</td></tr>
+<tr><td>56.</td><td>Haiku</td><td>Qb5+</td><td>0</td><td>Check along the fifth rank to restrict the black king.</td></tr>
+<tr><td>56...</td><td>Opus</td><td>Kd4</td><td>0</td><td>Stepping out of check and keeping my king central.</td></tr>
+<tr><td>57.</td><td>Haiku</td><td>Qb3</td><td>0</td><td>Queen to b3 restricts the Black king from the third rank and diagonals.</td></tr>
+<tr><td>57...</td><td>Opus</td><td>Ke4</td><td>0</td><td>Centralizing toward the pawn, keeping the king active and safe.</td></tr>
+<tr><td>58.</td><td>Haiku</td><td>Qb4+</td><td>0</td><td>Check from a distance keeps the king boxed in.</td></tr>
+<tr><td>58...</td><td>Opus</td><td>Kd5</td><td>0</td><td>Keeping my king central, away from the edges.</td></tr>
+<tr><td>59.</td><td>Haiku</td><td>Kf4</td><td>0</td><td>Bring the king in to restrict Black&#x27;s king.</td></tr>
+<tr><td>59...</td><td>Opus</td><td>Ke6</td><td>0</td><td>Keeping my king central and away from the queen.</td></tr>
+<tr><td>60.</td><td>Haiku</td><td>Qb6+</td><td>0</td><td>Check along the sixth rank, keeping my king safe.</td></tr>
+<tr><td>60...</td><td>Opus</td><td>Kd5</td><td>0</td><td>Stepping out of the check and keeping my king central.</td></tr>
+<tr><td>61.</td><td>Haiku</td><td>Kf5</td><td>0</td><td>Restricts the black king so its only legal reply is Kc4.</td></tr>
+<tr><td>61...</td><td>Opus</td><td>Kc4</td><td>0</td><td>Only legal move; my king escapes the net.</td></tr>
+<tr><td>62.</td><td>Haiku</td><td>Ke4</td><td>0</td><td>Cover d3–d5 and leave Black only one king move.</td></tr>
+<tr><td>62...</td><td>Opus</td><td>Kc3</td><td>0</td><td>Only one safe square; the king steps to c3.</td></tr>
+<tr><td>63.</td><td>Haiku</td><td>Qb5</td><td>0</td><td>Queen to b5 cuts off the b-file and c4, leaving the king only c2 or d2.</td></tr>
+<tr><td>63...</td><td>Opus</td><td>Kc2</td><td>0</td><td>Lost position; keeping my king near the center.</td></tr>
+<tr><td>64.</td><td>Haiku</td><td>Ke3</td><td>0</td><td>Walking the king up to cut off d2 and d3.</td></tr>
+<tr><td>64...</td><td>Opus</td><td>Kc3</td><td>0</td><td>Keeping my king central and away from the edge.</td></tr>
+<tr><td>65.</td><td>Haiku</td><td>Qc5+</td><td>0</td><td>Check on the c-file, pushing the king toward the corner.</td></tr>
+<tr><td>65...</td><td>Opus</td><td>Kb3</td><td>0</td><td>Only two king moves escape the check; heading toward the corner.</td></tr>
+<tr><td>66.</td><td>Haiku</td><td>Kd3</td><td>0</td><td>Bringing the king closer to support the queen.</td></tr>
+<tr><td>66...</td><td>Opus</td><td>Kb2</td><td>0</td><td>Keeping my king off the edge for as long as possible.</td></tr>
+<tr><td>67.</td><td>Haiku</td><td>Qc2+</td><td>0</td><td>Protected check; the king must run to the edge.</td></tr>
+<tr><td>67...</td><td>Opus</td><td>Ka3</td><td>0</td><td>Stepping out of the corner to avoid a quick mate.</td></tr>
+<tr><td>68.</td><td>Haiku</td><td>Qb1</td><td>0</td><td>Quiet queen move on b1 covers a2 and the b-file, leaving only Ka4.</td></tr>
+<tr><td>68...</td><td>Opus</td><td>Ka4</td><td>0</td><td>Only legal move; the king slips toward the edge.</td></tr>
+<tr><td>69.</td><td>Haiku</td><td>Qb2</td><td>0</td><td>Restricting the king: Qb2 leaves only Ka5.</td></tr>
+<tr><td>69...</td><td>Opus</td><td>Ka5</td><td>0</td><td>Only legal move; I keep running.</td></tr>
+<tr><td>70.</td><td>Haiku</td><td>Kc4</td><td>0</td><td>Kc4 takes the b-file squares from the black king.</td></tr>
+<tr><td>70...</td><td>Opus</td><td>Ka6</td><td>0</td><td>Heading away from the corner to avoid a quick mate.</td></tr>
+<tr><td>71.</td><td>Haiku</td><td>Qb5+</td><td>0</td><td>Forcing check; the queen is protected by my king.</td></tr>
+<tr><td>71...</td><td>Opus</td><td>Ka7</td><td>0</td><td>Only legal move; the king retreats to the corner.</td></tr>
+<tr><td>72.</td><td>Haiku</td><td>Kc5</td><td>0</td><td>Keeping Black&#x27;s king boxed in, heading for a mating net.</td></tr>
+<tr><td>72...</td><td>Opus</td><td>Ka8</td><td>0</td><td>Only legal move; the king retreats to the corner.</td></tr>
+<tr><td>73.</td><td>Haiku</td><td>Kb6</td><td>0</td><td>King steps up, covering a7 and b7.</td></tr>
+<tr><td>73...</td><td>Opus</td><td>Kb8</td><td>0</td><td>Only legal move; the end is near.</td></tr>
+<tr><td>74.</td><td>Haiku</td><td>Qe8#</td><td>0</td><td>Queen to e8 checks along the eighth rank, and every escape square is covered.</td></tr>
+</table></details></section>
+<p>The board used for replays is a chess engine Claude Code built from scratch: <a href="https://denzil10.github.io/claude-chess-engine/">play it</a>.</p>
+</body></html>

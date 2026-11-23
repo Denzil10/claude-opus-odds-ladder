@@ -1,0 +1,11 @@
+[Event "Odds ladder rung 1: Opus gives a knight"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "Claude Haiku 5.5"]
+[Black "Claude Opus 5.5"]
+[Result "0-1"]
+[FEN "r1bqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"]
+[SetUp "1"]
+
+1. e4 e5 2. Nf3 d6 3. Bc4 Be7 4. O-O Nf6 5. Nc3 O-O 6. d4 exd4 7. Nxd4 Re8 8. Nd5 Nxe4 9. Nxe7+ Qxe7 10. Re1 Qf6 11. Qd3 Bf5 12. Nxf5 Qxf5 13. Qf3 Qxf3 14. Be3 Qf6 15. f3 Ng5 16. Bxg5 Qxg5 17. Rxe8+ Rxe8 18. Bd5 Qxd5 19. a3 Qd4+ 20. Kh1 Qxb2 21. Rd1 Qxc2 22. Rf1 Re2 23. Rg1 h6 24. h3 Re1 25. Rxe1 Qc3 26. Re8+ Kh7 27. Re7 Qc1+ 28. Kh2 Qf4+ 29. Kh1 Qf6 30. Rxc7 Qb2 31. Rxf7 Qxa3 32. Rxb7 a5 33. Kg1 a4 34. Kf2 Qa2+ 35. Kg1 a3 36. Kf1 Qb1+ 37. Rxb1 a2 38. Ra1 d5 39. Rxa2 d4 40. Rd2 Kg6 41. Rxd4 Kf5 42. Rd5+ Ke6 43. Rh5 Kf6 44. Rxh6+ gxh6 45. Ke2 Kf5 46. Ke3 Ke5 47. f4+ Kf5 48. g4+ Kg6 49. f5+ Kf6 50. Kf4 Kf7 51. Ke5 Ke7 52. f6+ Kf7 53. Kf5 Kf8 54. g5 hxg5 55. Ke6 Ke8 56. f7+ Kf8 57. Kf6 g4 58. Ke6 gxh3 59. Kf6 h2 60. Kg6 h1=Q 61. Kf6 Qh6+ 62. Ke5 Kxf7 63. Kd5 Qe3 64. Kd6 Qe4 65. Kd7 Qe6+ 66. Kc7 Ke7 67. Kb8 Kd7 68. Kb7 Qc6+ 69. Kb8 Kd8 70. Ka7 Qb5 71. Ka8 Kc7 72. Ka7 Qb7# 0-1

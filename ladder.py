@@ -119,7 +119,8 @@ elif board.is_game_over(claim_draw=True):
 else:
     result, why = "1/2-1/2", "MOVE 150 CAP"
 print(f"\n {B}RESULT {result}{X}  {why}   moves: {board.fullmove_number}   illegal: Haiku {illegal['haiku']}, Opus {illegal['opus']}")
-log(result=result, why=why, illegal=illegal, moves=board.fullmove_number, rung=rung, label=label, start=START)
+log(result=result, why=why, illegal=illegal, moves=board.fullmove_number,  # moves = number AFTER the last move (one high when Black moved last)
+    rung=rung, label=label, start=START)
 pg = chess.pgn.Game.from_board(board)
 pg.headers.update({"Event": f"Odds ladder rung {rung}: Opus gives {label}", "White": "Claude Haiku 5.5",
                    "Black": "Claude Opus 5.5", "Result": result})
